@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuestbookDao {
-    public int deleteByNoAndPassword(Long no, String password) {
-        int result = 0;
+    public boolean deleteByNoAndPassword(Long no, String password) {
+        boolean result = false;
 
         try (
                 Connection conn = getConnection();
@@ -16,7 +16,7 @@ public class GuestbookDao {
         ){
             pstmt.setLong(1, no);
             pstmt.setString(2, password);
-            result = pstmt.executeUpdate();
+            result = pstmt.executeUpdate() == 1;
         } catch (SQLException e) {
             System.out.println("Error:" + e);
         }
@@ -47,7 +47,7 @@ public class GuestbookDao {
         return result;
     }
 
-    public List<GuestbookVo> findAll() {
+    public static List<GuestbookVo> findAll() {
         List<GuestbookVo> result = new ArrayList<>();
 
         try (
@@ -81,13 +81,13 @@ public class GuestbookDao {
         return result;
     }
 
-    private Connection getConnection() throws SQLException {
+    private static Connection getConnection() throws SQLException {
         Connection conn = null;
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
 
-            String url = "jdbc:mariadb://192.168.0.203:3306/webdb?charset=utf8";
+            String url = "jdbc:mariadb://192.168.64.3:3306/webdb?charset=utf8";
             conn = DriverManager.getConnection(url, "webdb", "webdb");
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패:" + e);
