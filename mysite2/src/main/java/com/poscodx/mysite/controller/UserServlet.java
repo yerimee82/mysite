@@ -1,10 +1,7 @@
 package com.poscodx.mysite.controller;
 
 import com.poscodx.mysite.controller.action.main.MainAction;
-import com.poscodx.mysite.controller.action.user.JoinAction;
-import com.poscodx.mysite.controller.action.user.JoinFormAction;
-import com.poscodx.mysite.controller.action.user.JoinSuccess;
-import com.poscodx.mysite.controller.action.user.LoginFormAction;
+import com.poscodx.mysite.controller.action.user.*;
 import com.sun.tools.javac.Main;
 
 import java.util.Map;
@@ -14,7 +11,12 @@ public class UserServlet extends ActionServlet {
             "joinform", new JoinFormAction(),
             "join", new JoinAction(),
             "joinsuccess", new JoinSuccess(),
-            "loginform", new LoginFormAction()
+            "loginform", new LoginFormAction(),
+            "login", new LoginAction(),
+            "logout", new LogoutAction(),
+            "updateform", new UpdateFormAction(),
+            "update", new UpdateAction(),
+            "updatesuccess", new UpdateSuccess()
     );
     @Override
     protected Action getAction(String actionName) {
