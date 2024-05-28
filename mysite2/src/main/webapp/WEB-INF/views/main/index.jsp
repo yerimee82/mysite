@@ -1,3 +1,4 @@
+<%@ page import="com.poscodx.mysite.vo.UserVo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>

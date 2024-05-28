@@ -29,23 +29,34 @@ public class UpdateAction implements ActionServlet.Action {
         ///////////////////////////////////////////////////////////
 
         String name = req.getParameter("name");
-        String email = req.getParameter("email");
         String password = req.getParameter("password");
         String gender = req.getParameter("gender");
 
         UserVo vo = new UserVo();
         vo.setNo(authUser.getNo());
         vo.setName(name);
-        vo.setEmail(email);
         vo.setGender(gender);
 
-        if("".equals(password)) {
-            new UserDao().update(vo);
-        } else {
-            vo.setPassword(password);
-            new UserDao().updateWithPassword(vo);
+        int updatedRows = updateUserInfo(vo,password);
+
+        if(updatedRows > 0) {
+            updateAuthUser(authUser, name, gender);
+            session.setAttribute("authUser", authUser);
         }
 
         resp.sendRedirect(req.getContextPath()+"/user?a=updatesuccess");
     }
+    private int updateUserInfo(UserVo vo, String password) {
+        if("".equals(password)) {
+            return new UserDao().update(vo);
+        }
+        vo.setPassword(password);
+        return new UserDao().updateWithPassword(vo);
+    }
+
+    private void updateAuthUser(UserVo authUser, String name, String gender) {
+        authUser.setName(name);
+        authUser.setGender(gender);
+    }
+
 }
