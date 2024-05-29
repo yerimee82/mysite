@@ -2,6 +2,7 @@ package com.poscodx.mysite.dao;
 
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.GuestbookVo;
+import com.poscodx.mysite.vo.UserVo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -95,6 +96,63 @@ public class BoardDao {
 
         return result;
     }
+    public BoardVo findByNo(Long no) {
+        BoardVo result = null;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("select a.no, a.title, a.contents, a.reg_date, a.hit, " +
+                        "a.g_no, a.o_no, a.depth, b.no, b.name " +
+                        "from board a, user b where a.user_no = b.no and a.no = ?");
+        ) {
+
+            pstmt.setLong(1, no);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                String title = rs.getString(2);
+                String content = rs.getString(3);
+                String regDate = rs.getString(4);
+                int hit = rs.getInt(5);
+                int groupNo = rs.getInt(6);
+                int orderNo = rs.getInt(7);
+                int depths = rs.getInt(8);
+                Long userNo = rs.getLong(9);
+                String userName = rs.getString(10);
+
+                result = new BoardVo();
+                result.setNo(no);
+                result.setTitle(title);
+                result.setContents(content);
+                result.setRegDate(regDate);
+                result.setHit(hit);
+                result.setgNo(groupNo);
+                result.setoNo(orderNo);
+                result.setDepth(depths);
+                result.setUserNo(userNo);
+                result.setUserName(userName);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+
+        return result;
+    }
+
+    public int updateHit(Long no) {
+        int result = 0;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("update board set hit = hit + 1 where no = ?")
+        ) {
+            pstmt.setLong(1, no);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+        return result;
+    }
 
     private static Connection getConnection() throws SQLException {
         Connection conn = null;
@@ -110,4 +168,6 @@ public class BoardDao {
 
         return conn;
     }
+
+
 }
