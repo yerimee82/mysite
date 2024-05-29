@@ -12,6 +12,11 @@
     <c:import url="/WEB-INF/views/includes/header.jsp"/>
     <div id="content">
         <div id="guestbook" class="delete-form">
+            <c:if test="${not empty message}">
+                <script>
+                    alert("${message}");
+                </script>
+            </c:if>
             <form method="post" name="df" action="${pageContext.request.contextPath}/guestbook">
                 <input type="hidden" name="a" value="delete">
                 <input type="hidden" name="no" value="${param.no }">
@@ -23,9 +28,6 @@
                     </tr>
                 </table>
             </form>
-            <c:if test="${not empty message}">
-                <p style="text-align: center;">${message}</p>
-            </c:if>
             <a href="${pageContext.request.contextPath}/guestbook">방명록 리스트</a>
         </div>
     </div>
