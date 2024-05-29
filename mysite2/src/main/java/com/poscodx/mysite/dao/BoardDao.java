@@ -4,6 +4,8 @@ import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.GuestbookVo;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardDao {
     public int insert(BoardVo vo) {
@@ -44,6 +46,47 @@ public class BoardDao {
         ) {
             if(rs.next()) {
                 result = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+
+        return result;
+    }
+
+    public static List<BoardVo> findAll() {
+        List<BoardVo> result = new ArrayList<>();
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "select a.no ,  a.title  , a.contents , a.reg_date, a.depth , a.hit , b.no as user_no , b.name " +
+                                "from board a ,user b where a.user_no = b.no order by a.g_no desc ");
+                ResultSet rs = pstmt.executeQuery();
+        ) {
+
+            while(rs.next()) {
+                Long no = rs.getLong(1);
+                String title = rs.getString(2);
+                String contents = rs.getString(3);
+                String regDate = rs.getString(4);
+                int depth = rs.getInt(5);
+                int hit = rs.getInt(6);
+                Long userNo = rs.getLong(7);
+                String userName = rs.getString(8);
+
+                BoardVo vo = new BoardVo();
+                vo.setNo(no);
+                vo.setTitle(title);
+                vo.setContents(contents);
+                vo.setRegDate(regDate);
+                vo.setDepth(depth);
+                vo.setHit(hit);
+                vo.setUserNo(userNo);
+                vo.setUserName(userName);
+
+                result.add(vo);
             }
 
         } catch (SQLException e) {
