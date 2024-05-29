@@ -1,6 +1,6 @@
 package com.poscodx.mysite.controller.action.guestbook;
 
-import com.poscodx.mysite.controller.ActionServlet;
+import com.poscodx.mysite.controller.ActionServlet.Action;
 import com.poscodx.mysite.dao.GuestbookDao;
 import com.poscodx.mysite.vo.GuestbookVo;
 
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AddAction implements ActionServlet.Action {
+public class AddAction implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");

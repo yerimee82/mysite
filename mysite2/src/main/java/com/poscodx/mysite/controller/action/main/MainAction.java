@@ -1,13 +1,13 @@
 package com.poscodx.mysite.controller.action.main;
 
-import com.poscodx.mysite.controller.ActionServlet;
+import com.poscodx.mysite.controller.ActionServlet.Action;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class MainAction implements ActionServlet.Action {
+public class MainAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

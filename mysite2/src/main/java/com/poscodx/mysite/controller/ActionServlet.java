@@ -12,7 +12,6 @@ public abstract class ActionServlet extends HttpServlet {
     protected abstract Action getAction(String actionName);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("utf-8");
         String actionName = Optional.ofNullable(req.getParameter("a")).orElse("");
 
         Action action = getAction(actionName);
@@ -29,6 +28,6 @@ public abstract class ActionServlet extends HttpServlet {
     }
 
     public static interface Action {
-        void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+        void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
     }
 }
