@@ -33,7 +33,7 @@
                         <c:choose>
                             <c:when test="${vo.depth eq 1}">
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
-                                    ${vo.no}
+                                        ${count - status.index}
                                     <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a>
                                 </td>
                             </c:when>
@@ -47,6 +47,23 @@
                         <td>${vo.userName}</td>
                         <td>${vo.hit}</td>
                         <td>${vo.regDate}</td>
+
+                        <c:choose>
+                            <c:when test="${authUser.no eq vo.userNo}">
+                                <td>
+                                    <a href="#" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                </td>
+                            </c:when>
+                        </c:choose>
+                        <script>
+                            function showAlert(url) {
+                                if (confirm("정말 삭제 하시겠습니까?")) {
+                                    window.location.href = url;
+                                    return true;
+                                }
+                                return false;
+                            }
+                        </script>
                     </tr>
                 </c:forEach>
             </table>

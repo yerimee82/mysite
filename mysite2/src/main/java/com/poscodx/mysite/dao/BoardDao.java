@@ -171,6 +171,22 @@ public class BoardDao {
         return result;
     }
 
+    public int deleteByNo(Long no) {
+        int result = 0;
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("delete from board where no = ?");
+        ){
+            pstmt.setLong(1, no);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+
+        return result;
+    }
+
     private static Connection getConnection() throws SQLException {
         Connection conn = null;
 
@@ -185,6 +201,4 @@ public class BoardDao {
 
         return conn;
     }
-
-
 }

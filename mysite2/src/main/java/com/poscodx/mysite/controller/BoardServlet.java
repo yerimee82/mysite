@@ -15,7 +15,8 @@ public class BoardServlet extends ActionServlet{
             "writeform", new WriteFormAction(),
             "write", new WriteAction(),
             "modifyform", new ModifyFormAction(),
-            "modify", new ModifyAction()
+            "modify", new ModifyAction(),
+            "delete", new DeleteAction()
     );
 
     @Override
