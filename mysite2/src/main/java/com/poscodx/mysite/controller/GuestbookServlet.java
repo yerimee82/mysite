@@ -1,5 +1,9 @@
 package com.poscodx.mysite.controller;
 
+import com.poscodx.mysite.controller.action.guestbook.AddAction;
+import com.poscodx.mysite.controller.action.guestbook.DeleteAction;
+import com.poscodx.mysite.controller.action.guestbook.DeleteFormAction;
+import com.poscodx.mysite.controller.action.guestbook.ListAction;
 import com.poscodx.mysite.dao.GuestbookDao;
 import com.poscodx.mysite.vo.GuestbookVo;
 
@@ -10,68 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-public class GuestbookServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("utf-8");
-        String action = req.getParameter("a");
+public class GuestbookServlet extends ActionServlet {
+    private static final long serialVersionUID = 1L;
 
-        if ("deleteform".equals(action)) {
-            RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/guestbook/deleteform.jsp");
-            rd.forward(req, resp);
-
-        } else if ("delete".equals(action)) {
-            String noStr = req.getParameter("no");
-            String password = req.getParameter("password");
-
-            if (noStr != null && password != null) {
-                Long no = Long.parseLong(noStr);
-                GuestbookDao dao = new GuestbookDao();
-
-                boolean isDeleted = dao.deleteByNoAndPassword(no, password);
-
-                if (!isDeleted) {
-                    resp.setContentType("text/html; charset=UTF-8");
-                    resp.getWriter().println("<script>");
-                    resp.getWriter().println("alert('비밀번호가 틀렸습니다.');");
-                    resp.getWriter().println("history.back();");
-                    resp.getWriter().println("</script>");
-                    return;
-                }
-                resp.sendRedirect(req.getContextPath() + "/guestbook");
-            }
-        } else {
-            List<GuestbookVo> guestbookList = GuestbookDao.findAll();
-            req.setAttribute("guestbookList", guestbookList);
-            req.getRequestDispatcher("/WEB-INF/views/guestbook/list.jsp")
-                    .forward(req, resp);
-        }
-    }
+    private Map<String, Action> mapAction = Map.of(
+            "deleteform", new DeleteFormAction(),
+            "add", new AddAction(),
+            "delete", new DeleteAction()
+    );
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        String action = req.getParameter("a");
-
-        if ("insert".equals(action)) {
-            String name = req.getParameter("name");
-            String password = req.getParameter("password");
-            String contents = req.getParameter("contents");
-
-            if (name != null && password != null && contents != null) {
-                GuestbookVo vo = new GuestbookVo();
-                vo.setName(name);
-                vo.setPassword(password);
-                vo.setContents(contents);
-
-                GuestbookDao dao = new GuestbookDao();
-                dao.insert(vo);
-
-                resp.sendRedirect(req.getContextPath()+"/guestbook");
-            }
-        } else {
-            doGet(req, resp);
-        }
+    protected Action getAction(String actionName) {
+        return mapAction.getOrDefault(actionName, new ListAction());
     }
 }
