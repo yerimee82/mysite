@@ -36,13 +36,12 @@ public class ViewAction implements Action {
         if (!found) {
             new BoardDao().updateHit(no);
 
-            // 새 쿠키 생성 (유효기간: 1일)
             Cookie newCookie = new Cookie(cookieName, "true");
-            newCookie.setMaxAge(24 * 60 * 60); // 1일 (단위: 초)
+            newCookie.setMaxAge(24 * 60 * 60);  // 1일
             newCookie.setPath(req.getContextPath());
             resp.addCookie(newCookie);
         }
-        
+
         req.setAttribute("title", boardVo.getTitle());
         req.setAttribute("contents", boardVo.getContents());
         req.setAttribute("no", no);

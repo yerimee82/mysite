@@ -154,6 +154,23 @@ public class BoardDao {
         return result;
     }
 
+    public int modifyPost(Long no, String title, String contents) {
+        int result = 0;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("update board set title = ?, contents = ? where no = ?")
+        ) {
+            pstmt.setString(1, title);
+            pstmt.setString(2, contents);
+            pstmt.setLong(3, no);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+        return result;
+    }
+
     private static Connection getConnection() throws SQLException {
         Connection conn = null;
 
