@@ -19,11 +19,6 @@ public class EncodingFilter extends HttpFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         /* request */
         req.setCharacterEncoding(encoding);
-
-        /* response 처리 */
-        res.setContentType("text/html; charset=" + encoding);
-        res.setCharacterEncoding(encoding);
-
         chain.doFilter(req, res);
     }
 }
