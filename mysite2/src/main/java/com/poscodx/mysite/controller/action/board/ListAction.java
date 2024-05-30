@@ -13,27 +13,32 @@ import java.util.List;
 public class ListAction implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int currentPage = 1;
 
-        int currentPage = 1; // 기본값으로 1 설정
-
-        // 요청 파라미터인 "page"가 null이 아닌 경우에만 현재 페이지 값을 가져옴
         String pageParam = req.getParameter("page");
         if (pageParam != null && !pageParam.isEmpty()) {
             currentPage = Integer.parseInt(pageParam);
         }
 
         int totalPosts = new BoardDao().countTotalPosts();
+        System.out.println(totalPosts);
         int limit = 5;
         int offset = (currentPage - 1) * limit;
         int totalPages = (int) Math.ceil((double) totalPosts / limit);
 
         List<BoardVo> list = new BoardDao().findByLimitAndOffset(limit, offset);
 
-        // 페이징 정보를 계산하여 전달
-        int startPage = Math.max(1, currentPage - 2);
-        int endPage = Math.min(totalPages, currentPage + 2);
+        int maxPage = 5;
+        int startPage = Math.max(1, currentPage - maxPage / 2);
+        int endPage = Math.min(totalPages, startPage + maxPage - 1);
+
+
+        if (endPage - startPage < maxPage - 1) {
+            startPage = Math.max(1, endPage - maxPage + 1);
+        }
 
         req.setAttribute("list", list);
+        req.setAttribute("totalPosts", totalPosts);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("startPage", startPage);

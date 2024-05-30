@@ -27,13 +27,14 @@
                     <th>작성일</th>
                     <th>&nbsp;</th>
                 </tr>
-                <c:set var="count" value="${fn:length(list)}"/>
-                <c:forEach items="${list}" var="vo" varStatus="status" begin="0">
+                <c:set var="count" value="${totalPosts}"/>
+                <c:forEach items="${list}" var="vo" varStatus="status">
                     <tr>
+                        <td>${count}</td>
+                        <c:set var="count" value="${count - 1}"/>
                         <c:choose>
                             <c:when test="${vo.depth eq 1}">
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
-                                        ${count - status.index}
                                     <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a>
                                 </td>
                             </c:when>
@@ -70,7 +71,7 @@
             <!-- pager 추가 -->
             <div class="pager">
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage - 1}">◀</a></li>
+                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1 ? currentPage - 1 : 1}">◀</a></li>
 
                     <c:forEach var="i" begin="${startPage}" end="${endPage}">
                         <c:choose>
@@ -83,7 +84,7 @@
                         </c:choose>
                     </c:forEach>
 
-                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage + 1}">▶</a></li>
+                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage < totalPages ? currentPage + 1 : totalPages}">▶</a></li>
                 </ul>
             </div>
             <div class="bottom">
