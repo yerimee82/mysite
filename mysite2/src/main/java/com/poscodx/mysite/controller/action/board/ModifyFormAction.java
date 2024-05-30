@@ -29,8 +29,6 @@ public class ModifyFormAction implements Action {
         Long userNo = authUser.getNo();
         Long boardVoUserNo = boardVo.getUserNo();
 
-        System.out.println("boardVoUserNo = " + boardVoUserNo + "userNo = " + userNo);
-
         if(!Objects.equals(userNo, boardVoUserNo)) {
             resp.sendRedirect(req.getContextPath()+"/board");
             return;

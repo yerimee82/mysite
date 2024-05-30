@@ -46,7 +46,14 @@ public class ViewAction implements Action {
         req.setAttribute("contents", boardVo.getContents());
         req.setAttribute("no", no);
         req.setAttribute("userNo", boardVo.getUserNo());
+        req.setAttribute("gNo", boardVo.getgNo());
+        req.setAttribute("oNo", boardVo.getoNo());
+        req.setAttribute("depth", boardVo.getDepth());
 
+
+        System.out.println("gno = " + boardVo.getgNo());
+        System.out.println("ono = " + boardVo.getoNo());
+        System.out.println("depth = " + boardVo.getDepth());
         req
                 .getRequestDispatcher("/WEB-INF/views/board/view.jsp")
                 .forward(req, resp);

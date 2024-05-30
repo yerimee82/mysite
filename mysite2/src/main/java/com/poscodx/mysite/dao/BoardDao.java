@@ -45,7 +45,7 @@ public class BoardDao {
                         "select max(g_no) from board");
                 ResultSet rs = pstmt.executeQuery();
         ) {
-            if(rs.next()) {
+            if (rs.next()) {
                 result = rs.getInt(1);
             }
 
@@ -62,26 +62,29 @@ public class BoardDao {
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(
-                        "select a.no ,  a.title  , a.contents , a.reg_date, a.depth , a.hit , b.no as user_no , b.name " +
-                                "from board a ,user b where a.user_no = b.no order by a.g_no desc ");
+                        "select a.no ,  a.title  , a.contents , a.reg_date, a.o_no, a.depth , a.hit ," +
+                                " b.no as user_no , b.name " +
+                                "from board a ,user b where a.user_no = b.no order by a.g_no desc, a.o_no asc");
                 ResultSet rs = pstmt.executeQuery();
         ) {
 
-            while(rs.next()) {
+            while (rs.next()) {
                 Long no = rs.getLong(1);
                 String title = rs.getString(2);
                 String contents = rs.getString(3);
                 String regDate = rs.getString(4);
-                int depth = rs.getInt(5);
-                int hit = rs.getInt(6);
-                Long userNo = rs.getLong(7);
-                String userName = rs.getString(8);
+                int oNo = rs.getInt(5);
+                int depth = rs.getInt(6);
+                int hit = rs.getInt(7);
+                Long userNo = rs.getLong(8);
+                String userName = rs.getString(9);
 
                 BoardVo vo = new BoardVo();
                 vo.setNo(no);
                 vo.setTitle(title);
                 vo.setContents(contents);
                 vo.setRegDate(regDate);
+                vo.setoNo(oNo);
                 vo.setDepth(depth);
                 vo.setHit(hit);
                 vo.setUserNo(userNo);
@@ -96,6 +99,7 @@ public class BoardDao {
 
         return result;
     }
+
     public BoardVo findByNo(Long no) {
         BoardVo result = null;
 
@@ -108,7 +112,7 @@ public class BoardDao {
 
             pstmt.setLong(1, no);
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 String title = rs.getString(2);
                 String content = rs.getString(3);
                 String regDate = rs.getString(4);
@@ -177,7 +181,7 @@ public class BoardDao {
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement("delete from board where no = ?");
-        ){
+        ) {
             pstmt.setLong(1, no);
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -186,6 +190,26 @@ public class BoardDao {
 
         return result;
     }
+
+    public int insertReply(BoardVo vo) {
+        return insert(vo);
+    }
+
+    public int adjustOrderNo(int gNo, int oNo) {
+        int result = 0;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("update board set o_no = o_no + 1 where g_no = ? and o_no > ?");
+        ) {
+            pstmt.setInt(1, gNo);
+            pstmt.setInt(2, oNo);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+        return result;
+    }
+
 
     private static Connection getConnection() throws SQLException {
         Connection conn = null;

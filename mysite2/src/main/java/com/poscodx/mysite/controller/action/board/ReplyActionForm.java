@@ -8,22 +8,28 @@ import com.poscodx.mysite.vo.UserVo;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-public class ListAction implements Action {
+public class ReplyActionForm implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        int page = Integer.parseInt(req.getParameter("page"));
-//        int limit = 5;
-//        int offset = (page - 1) * limit;
+        Long no = Long.valueOf(req.getParameter("no"));
 
-        List<BoardVo> list = new BoardDao().findAll();
+        HttpSession session = req.getSession();
+        UserVo authUser = (UserVo) session.getAttribute("authUser");
 
-        req.setAttribute("list", list);
+        if(authUser == null) {
+            resp.sendRedirect(req.getContextPath()+"/board");
+            return;
+        }
+        BoardVo vo = new BoardDao().findByNo(no);
+
+        req.setAttribute("vo", vo);
 
         req
-                .getRequestDispatcher("/WEB-INF/views/board/list.jsp")
+                .getRequestDispatcher("/WEB-INF/views/board/reply.jsp")
                 .forward(req, resp);
+
     }
 }
