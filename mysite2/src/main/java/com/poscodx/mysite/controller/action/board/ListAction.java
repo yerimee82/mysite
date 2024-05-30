@@ -13,25 +13,28 @@ import java.util.List;
 public class ListAction implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int currentPage = 1;
-
-        String pageParam = req.getParameter("page");
-        if (pageParam != null && !pageParam.isEmpty()) {
-            currentPage = Integer.parseInt(pageParam);
-        }
-
-        int totalPosts = new BoardDao().countTotalPosts();
-        System.out.println(totalPosts);
+        int currentPage = getCurrentPage(req);
         int limit = 5;
         int offset = (currentPage - 1) * limit;
+
+        String keyword = req.getParameter("kwd");
+        List<BoardVo> list;
+        int totalPosts;
+
+        BoardDao boardDao = new BoardDao();
+        if (keyword!= null &&!keyword.isEmpty()) {
+            totalPosts = boardDao.countTotalPosts(keyword);
+
+            list = boardDao.searchWithKeywords(keyword, limit, offset);
+        } else {
+            totalPosts = boardDao.countTotalPosts();
+            list = BoardDao.findByLimitAndOffset(limit, offset);
+        }
+
         int totalPages = (int) Math.ceil((double) totalPosts / limit);
-
-        List<BoardVo> list = new BoardDao().findByLimitAndOffset(limit, offset);
-
         int maxPage = 5;
         int startPage = Math.max(1, currentPage - maxPage / 2);
         int endPage = Math.min(totalPages, startPage + maxPage - 1);
-
 
         if (endPage - startPage < maxPage - 1) {
             startPage = Math.max(1, endPage - maxPage + 1);
@@ -43,9 +46,17 @@ public class ListAction implements Action {
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("startPage", startPage);
         req.setAttribute("endPage", endPage);
+        req.setAttribute("kwd", keyword);
 
         req
                 .getRequestDispatcher("/WEB-INF/views/board/list.jsp")
                 .forward(req, resp);
+    }
+    private int getCurrentPage(HttpServletRequest req) {
+        String pageParam = req.getParameter("page");
+        if (pageParam!= null &&!pageParam.isEmpty()) {
+            return Integer.parseInt(pageParam);
+        }
+        return 1;
     }
 }

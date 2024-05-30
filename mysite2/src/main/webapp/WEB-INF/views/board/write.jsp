@@ -10,7 +10,8 @@
     <link href="${pageContext.request.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<c:import url="/WEB-INF/views/includes/header.jsp"/>
+<div id="container">
+    <c:import url="/WEB-INF/views/includes/header.jsp"/>
 <div id="content">
     <div id="board">
         <form class="board-form" method="post" action="${pageContext.request.contextPath}/board?a=write">
@@ -26,7 +27,7 @@
                 <tr>
                     <td class="label">내용</td>
                     <td>
-                        <textarea id="content" name="contents"></textarea>
+                        <textarea id="content" name="contents" ></textarea>
                     </td>
                 </tr>
             </table>
@@ -37,8 +38,9 @@
         </form>
     </div>
 </div>
-<c:import url="/WEB-INF/views/includes/navigation.jsp"/>
-<c:import url="/WEB-INF/views/includes/footer.jsp"/>
+    <c:import url="/WEB-INF/views/includes/navigation.jsp"/>
+    <c:import url="/WEB-INF/views/includes/footer.jsp"/>
 </div>
+
 </body>
 </html>

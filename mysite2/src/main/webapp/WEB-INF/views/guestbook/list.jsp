@@ -23,7 +23,7 @@
 						<td>비밀번호</td><td><input type="password" name="password"></td>
 					</tr>
 					<tr>
-						<td colspan=4><textarea name="contents" id="contents" style="width: 500px; height: 50px"></textarea></td>
+						<td colspan=4><textarea name="content" id="content" style="width: 500px; height: 50px"></textarea></td>
 					</tr>
 					<tr>
 						<td colspan=4 align=right><input type="submit" value=" 확인 "></td>

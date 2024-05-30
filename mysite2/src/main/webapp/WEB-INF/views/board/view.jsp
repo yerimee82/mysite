@@ -31,6 +31,12 @@
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board?a=list">글목록</a>
+<%--					<c:if test="${not empty kwd}">--%>
+<%--						<li><a href="${pageContext.request.contextPath}/board?a=board&page=${i}&kwd=${kwd}">${i}</a></li>--%>
+<%--					</c:if>--%>
+<%--					<c:if test="${empty kwd}">--%>
+<%--					<a href="${pageContext.request.contextPath}/board?a=list">글목록</a>--%>
+<%--					</c:if>--%>
 					<c:choose>
 						<c:when test="${authUser.no eq userNo}">
 							<div class="bottom">

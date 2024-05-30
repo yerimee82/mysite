@@ -50,10 +50,11 @@ public class ViewAction implements Action {
         req.setAttribute("oNo", boardVo.getoNo());
         req.setAttribute("depth", boardVo.getDepth());
 
+        String kwd = req.getParameter("kwd");
+        if (kwd != null && !kwd.isEmpty()) {
+            req.getSession().setAttribute("kwd", kwd);
+        }
 
-        System.out.println("gno = " + boardVo.getgNo());
-        System.out.println("ono = " + boardVo.getoNo());
-        System.out.println("depth = " + boardVo.getDepth());
         req
                 .getRequestDispatcher("/WEB-INF/views/board/view.jsp")
                 .forward(req, resp);

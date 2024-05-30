@@ -14,8 +14,9 @@
     <c:import url="/WEB-INF/views/includes/header.jsp"/>
     <div id="content">
         <div id="board">
-            <form id="search_form" action="" method="post">
-                <input type="text" id="kwd" name="kwd" value="">
+            <form id="search_form" action="${pageContext.request.contextPath}/board" method="get">
+                <input type="hidden" name="a" value="board"/>
+                <input type="text" id="kwd" name="kwd" value="${kwd != null ? kwd : ''}">
                 <input type="submit" value="찾기">
             </form>
             <table class="tbl-ex">
@@ -48,13 +49,15 @@
                         <td>${vo.userName}</td>
                         <td>${vo.hit}</td>
                         <td>${vo.regDate}</td>
-
                         <c:choose>
                             <c:when test="${authUser.no eq vo.userNo}">
                                 <td>
                                     <a href="#" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
                                 </td>
                             </c:when>
+                            <c:otherwise>
+                                <td></td>
+                            </c:otherwise>
                         </c:choose>
                         <script>
                             function showAlert(url) {
@@ -71,20 +74,33 @@
             <!-- pager 추가 -->
             <div class="pager">
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1 ? currentPage - 1 : 1}">◀</a></li>
-
+                    <c:if test="${not empty kwd}">
+                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1? currentPage - 1 : 1}&kwd=${kwd}">◀</a></li>
+                    </c:if>
+                    <c:if test="${empty kwd}">
+                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1? currentPage - 1 : 1}">◀</a></li>
+                    </c:if>
                     <c:forEach var="i" begin="${startPage}" end="${endPage}">
                         <c:choose>
                             <c:when test="${i eq currentPage}">
                                 <li class="selected">${i}</li>
                             </c:when>
                             <c:otherwise>
+                                <c:if test="${not empty kwd}">
+                                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${i}&kwd=${kwd}">${i}</a></li>
+                                </c:if>
+                                <c:if test="${empty kwd}">
                                 <li><a href="${pageContext.request.contextPath}/board?a=board&page=${i}">${i}</a></li>
+                                </c:if>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
-
+                    <c:if test="${not empty kwd}">
+                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage < totalPages ? currentPage + 1 : totalPages}&kwd=${kwd}">▶</a></li>
+                    </c:if>
+                    <c:if test="${empty kwd}">
                     <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage < totalPages ? currentPage + 1 : totalPages}">▶</a></li>
+                    </c:if>
                 </ul>
             </div>
             <div class="bottom">
