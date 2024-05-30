@@ -11,8 +11,9 @@ public class PagingAction implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int currentPage = Integer.parseInt(req.getParameter("page"));
+
         System.out.println(currentPage);
 
-        resp.sendRedirect(req.getContextPath()+"/board?a=board");
+        resp.sendRedirect(req.getContextPath() + "/board?a=board");
     }
 }

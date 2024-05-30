@@ -1,8 +1,6 @@
 package com.poscodx.mysite.dao;
 
 import com.poscodx.mysite.vo.BoardVo;
-import com.poscodx.mysite.vo.GuestbookVo;
-import com.poscodx.mysite.vo.UserVo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,7 +54,7 @@ public class BoardDao {
         return result;
     }
 
-    public static List<BoardVo> findAll() {
+    public static List<BoardVo> findByLimitAndOffset(int limit, int offset) {
         List<BoardVo> result = new ArrayList<>();
 
         try (
@@ -64,9 +62,12 @@ public class BoardDao {
                 PreparedStatement pstmt = conn.prepareStatement(
                         "select a.no ,  a.title  , a.contents , a.reg_date, a.o_no, a.depth , a.hit ," +
                                 " b.no as user_no , b.name " +
-                                "from board a ,user b where a.user_no = b.no order by a.g_no desc, a.o_no asc");
-                ResultSet rs = pstmt.executeQuery();
+                                "from board a ,user b where a.user_no = b.no order by a.g_no desc, a.o_no asc " +
+                                "limit ? offset ?");
         ) {
+            pstmt.setInt(1, limit);
+            pstmt.setInt(2, offset);
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 Long no = rs.getLong(1);
@@ -91,6 +92,25 @@ public class BoardDao {
                 vo.setUserName(userName);
 
                 result.add(vo);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error:" + e);
+        }
+
+        return result;
+    }
+
+    public int countTotalPosts() {
+        int result = 0;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "select count(*) from board");
+                ResultSet rs = pstmt.executeQuery();
+        ) {
+            if (rs.next()) {
+                result = rs.getInt(1);
             }
 
         } catch (SQLException e) {
