@@ -51,9 +51,18 @@ public class ViewAction implements Action {
         req.setAttribute("depth", boardVo.getDepth());
 
         String kwd = req.getParameter("kwd");
+        System.out.println("kwd = " + kwd);
         if (kwd != null && !kwd.isEmpty()) {
             req.getSession().setAttribute("kwd", kwd);
         }
+
+        String currentPage = req.getParameter("page");
+        System.out.println("currentPage = " + currentPage);
+        if (currentPage == null || currentPage.isEmpty()) {
+            currentPage = "1";
+        }
+
+        req.setAttribute("currentPage", currentPage);
 
         req
                 .getRequestDispatcher("/WEB-INF/views/board/view.jsp")

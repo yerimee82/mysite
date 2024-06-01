@@ -36,13 +36,23 @@
                         <c:choose>
                             <c:when test="${vo.depth eq 1}">
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
-                                    <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a>
+                                    <c:if test="${not empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}&kwd=${kwd}">${vo.title}</a>
+                                    </c:if>
+                                    <c:if test="${empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}">${vo.title}</a>
+                                    </c:if>
                                 </td>
                             </c:when>
                             <c:otherwise>
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
                                     <img src='${pageContext.request.contextPath}/assets/images/reply.png'/>
-                                    <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a>
+                                    <c:if test="${not empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}&kwd=${kwd}">${vo.title}</a>
+                                    </c:if>
+                                    <c:if test="${empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}">${vo.title}</a>
+                                    </c:if>
                                 </td>
                             </c:otherwise>
                         </c:choose>
@@ -52,7 +62,12 @@
                         <c:choose>
                             <c:when test="${authUser.no eq vo.userNo}">
                                 <td>
-                                    <a href="#" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                    <c:if test="${not empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}&page=${currentPage}&kwd=${kwd}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                    </c:if>
+                                    <c:if test="${empty kwd}">
+                                        <a href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}&page=${currentPage}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                    </c:if>
                                 </td>
                             </c:when>
                             <c:otherwise>

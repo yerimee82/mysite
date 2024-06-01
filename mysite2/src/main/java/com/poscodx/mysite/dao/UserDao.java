@@ -94,7 +94,7 @@ public class UserDao {
                 result.setNo(no);
                 result.setName(name);
                 result.setEmail(email);
-                result.setPassword(gender);
+                result.setGender(gender);
             }
             rs.close();
         } catch (SQLException e) {

@@ -35,6 +35,7 @@ public class UpdateAction implements Action {
         UserVo vo = new UserVo();
         vo.setNo(authUser.getNo());
         vo.setName(name);
+        vo.setPassword(password);
         vo.setGender(gender);
 
         int updatedRows = updateUserInfo(vo,password);

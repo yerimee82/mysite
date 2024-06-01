@@ -23,7 +23,6 @@ public class JoinAction implements Action {
         vo.setPassword(password);
         vo.setGender(gender);
 
-        System.out.println(vo);
         new UserDao().insert(vo);
 
         resp.sendRedirect(req.getContextPath()+"/user?a=joinsuccess");

@@ -21,10 +21,6 @@ public class ReplyAction implements Action {
         int oNo = Integer.parseInt(req.getParameter("oNo"));
         int depth = Integer.parseInt(req.getParameter("depth"));
 
-        System.out.println("gNo = " + gNo);
-        System.out.println("oNo = " + oNo);
-        System.out.println("depth = " + depth);
-
         String title = req.getParameter("title");
         String contents = req.getParameter("contents");
 

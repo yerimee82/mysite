@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.poscodx.mysite.vo.UserVo" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,7 +27,7 @@
 				<fieldset>
 					<legend>성별</legend>
 					<c:choose>
-						<c:when test="${userVo.gender == 'female'}">
+						<c:when test='${userVo.gender == "female" }'>
 							<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
 							<label>남</label> <input type="radio" name="gender" value="male">
 						</c:when>

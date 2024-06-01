@@ -14,7 +14,7 @@ public class AddAction implements Action {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
-        String contents = req.getParameter("contents");
+        String contents = req.getParameter("content");
 
         GuestbookVo vo = new GuestbookVo();
         vo.setName(name);
