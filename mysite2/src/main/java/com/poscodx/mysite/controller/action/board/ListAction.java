@@ -13,6 +13,13 @@ import java.util.List;
 public class ListAction implements Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String action = req.getParameter("a");
+        if (action == null || action.isEmpty()) {
+            req.getSession().removeAttribute("kwd");
+            req.getSession().removeAttribute("page");
+        }
+
         int currentPage = getCurrentPage(req);
         int limit = 5;
         int offset = (currentPage - 1) * limit;
