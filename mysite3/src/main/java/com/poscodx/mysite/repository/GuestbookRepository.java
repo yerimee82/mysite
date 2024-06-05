@@ -1,6 +1,8 @@
 package com.poscodx.mysite.repository;
 
 import com.poscodx.mysite.vo.GuestbookVo;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -9,6 +11,12 @@ import java.util.List;
 
 @Repository
 public class GuestbookRepository {
+    private final SqlSession sqlSession;
+    @Autowired
+    public GuestbookRepository(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+    }
+
     public boolean deleteByNoAndPassword(Long no, String password) {
         boolean result = false;
 
@@ -49,38 +57,8 @@ public class GuestbookRepository {
         return result;
     }
 
-    public static List<GuestbookVo> findAll() {
-        List<GuestbookVo> result = new ArrayList<>();
-
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(
-                        "select no, name, contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s')" +
-                                "      from guestbook" +
-                                "  order by reg_date desc");
-                ResultSet rs = pstmt.executeQuery();
-        ) {
-
-            while(rs.next()) {
-                Long no = rs.getLong(1);
-                String name = rs.getString(2);
-                String contents = rs.getString(3);
-                String regDate = rs.getString(4);
-
-                GuestbookVo vo = new GuestbookVo();
-                vo.setNo(no);
-                vo.setName(name);
-                vo.setContents(contents);
-                vo.setRegDate(regDate);
-
-                result.add(vo);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error:" + e);
-        }
-
-        return result;
+    public List<GuestbookVo> findAll() {
+        return sqlSession.selectList("guestbook.findAll");
     }
 
     private static Connection getConnection() throws SQLException {
