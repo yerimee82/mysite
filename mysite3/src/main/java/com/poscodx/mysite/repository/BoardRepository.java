@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,10 @@ public class BoardRepository {
     }
 
     public List<BoardVo> findByLimitAndOffset(int limit, int offset) {
-        return sqlSession.selectList("board.findByLimitAndOffset", Map.of("limit", limit, "offset", offset));
+        Map<String, Object> params = new HashMap<>();
+        params.put("limit", limit);
+        params.put("offset", offset);
+        return sqlSession.selectList("board.findByLimitAndOffset", params);
     }
 
     public List<BoardVo> searchWithKeywords(String keyword, int limit, int offset) {
@@ -55,14 +59,24 @@ public class BoardRepository {
     }
 
     public int modifyPost(Long no, String title, String contents) {
-        return sqlSession.update("board.modifyPost", Map.of("no", no, "title", title, "contents", contents));
+        Map<String, Object> params = new HashMap<>();
+        params.put("no", no);
+        params.put("title", title);
+        params.put("contents", contents);
+        return sqlSession.update("board.modifyPost", params);
     }
 
-    public int deleteByNo(Long no) {
-        return sqlSession.delete("board.deleteByNo", no);
+    public int deleteByNo(Long no, Long userNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("no", no);
+        params.put("userNo", userNo);
+        return sqlSession.delete("board.deleteByNo", params);
     }
 
     public int adjustOrderNo(int gNo, int oNo) {
-        return sqlSession.update("boardMapper.adjustOrderNo", Map.of("gNo", gNo, "oNo", oNo));
+        Map<String, Object> params = new HashMap<>();
+        params.put("gNo", gNo);
+        params.put("oNo", oNo);
+        return sqlSession.update("boardMapper.adjustOrderNo", params);
     }
 }

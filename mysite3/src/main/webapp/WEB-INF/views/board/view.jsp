@@ -20,21 +20,21 @@
 					</tr>
 					<tr>
 						<td class="label">제목</td>
-						<td>${title}</td>
+						<td>${boardVo.title}</td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<div class="view-content">${contents}</div>
+							<div class="view-content">${boardVo.contents}</div>
 						</td>
 					</tr>
 				</table>
 				<div class="bottom">
 					<c:if test="${not empty kwd}">
-						<a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage}&kwd=${kwd}">글목록</a>
+						<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>
 					</c:if>
 					<c:if test="${empty kwd}">
-						<a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage}">글목록</a>
+						<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>
 					</c:if>
 					<c:choose>
 						<c:when test="${authUser.no eq userNo}">

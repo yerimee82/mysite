@@ -15,8 +15,7 @@
     <div id="content">
         <div id="board">
             <form id="search_form" action="${pageContext.request.contextPath}/board" method="get">
-                <input type="hidden" name="a" value="board"/>
-                <input type="text" id="kwd" name="kwd" value="${kwd != null ? kwd : ''}">
+                <input type="text" id="kwd" name="kwd" value="${kwd}">
                 <input type="submit" value="찾기">
             </form>
             <table class="tbl-ex">
@@ -37,10 +36,10 @@
                             <c:when test="${vo.depth eq 1}">
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
                                     <c:if test="${not empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}&kwd=${kwd}">${vo.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view/${vo.no}?page=${currentPage}&kwd=${kwd}">${vo.title}</a>
                                     </c:if>
                                     <c:if test="${empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}">${vo.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view/${vo.no}?page=${currentPage}">${vo.title}</a>
                                     </c:if>
                                 </td>
                             </c:when>
@@ -48,10 +47,10 @@
                                 <td style="text-align:left; padding-left:${vo.depth * 20}px">
                                     <img src='${pageContext.request.contextPath}/assets/images/reply.png'/>
                                     <c:if test="${not empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}&kwd=${kwd}">${vo.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view/${vo.no}?page=${currentPage}&kwd=${kwd}">${vo.title}</a>
                                     </c:if>
                                     <c:if test="${empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}&page=${currentPage}">${vo.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view/${vo.no}?page=${currentPage}">${vo.title}</a>
                                     </c:if>
                                 </td>
                             </c:otherwise>
@@ -90,10 +89,10 @@
             <div class="pager">
                 <ul>
                     <c:if test="${not empty kwd}">
-                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1? currentPage - 1 : 1}&kwd=${kwd}">◀</a></li>
+                        <li><a href="${pageContext.request.contextPath}/board?page=${currentPage > 1 ? currentPage - 1 : 1}&kwd=${kwd}">◀</a></li>
                     </c:if>
                     <c:if test="${empty kwd}">
-                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage > 1? currentPage - 1 : 1}">◀</a></li>
+                        <li><a href="${pageContext.request.contextPath}/board?page=${currentPage > 1 ? currentPage - 1 : 1}">◀</a></li>
                     </c:if>
                     <c:forEach var="i" begin="${startPage}" end="${endPage}">
                         <c:choose>
@@ -102,19 +101,19 @@
                             </c:when>
                             <c:otherwise>
                                 <c:if test="${not empty kwd}">
-                                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${i}&kwd=${kwd}">${i}</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/board?page=${i}&kwd=${kwd}">${i}</a></li>
                                 </c:if>
                                 <c:if test="${empty kwd}">
-                                <li><a href="${pageContext.request.contextPath}/board?a=board&page=${i}">${i}</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a></li>
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <c:if test="${not empty kwd}">
-                        <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage < totalPages ? currentPage + 1 : totalPages}&kwd=${kwd}">▶</a></li>
+                        <li><a href="${pageContext.request.contextPath}/board?page=${currentPage < totalPages ? currentPage + 1 : totalPages}&kwd=${kwd}">▶</a></li>
                     </c:if>
                     <c:if test="${empty kwd}">
-                    <li><a href="${pageContext.request.contextPath}/board?a=board&page=${currentPage < totalPages ? currentPage + 1 : totalPages}">▶</a></li>
+                        <li><a href="${pageContext.request.contextPath}/board?page=${currentPage < totalPages ? currentPage + 1 : totalPages}">▶</a></li>
                     </c:if>
                 </ul>
             </div>
