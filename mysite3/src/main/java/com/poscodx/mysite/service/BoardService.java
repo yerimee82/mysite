@@ -17,16 +17,26 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public void addContents(BoardVo vo) {
+    public void doFirstWrite(BoardVo vo) {
         int maxGroupNo = boardRepository.findMaxGroupNo();
         vo.setgNo(maxGroupNo + 1);
         vo.setoNo(1);
         vo.setDepth(1);
         vo.setHit(0);
 
-//        if(vo.getgNo() != 0) {
-//            boardRepository.adjustOrderNo(vo.getgNo(), vo.getoNo());
-//        }
+        addContents(vo);
+    }
+
+    public void doReply(BoardVo vo) {
+        boardRepository.adjustOrderNo(vo.getgNo(), vo.getoNo());
+        vo.setoNo(vo.getoNo() + 1);
+        vo.setDepth(vo.getDepth() + 1);
+        vo.setHit(0);
+
+        addContents(vo);
+    }
+
+    public void addContents(BoardVo vo) {
         boardRepository.insert(vo);
     }
 
@@ -37,10 +47,6 @@ public class BoardService {
         }
         return vo;
     }
-
-//    public BoardVo getContents(Long boardNo, Long userNo) {
-//
-//    }
 
     public void modifyContents(BoardVo vo) {
         boardRepository.modifyPost(vo.getNo(), vo.getTitle(), vo.getContents());

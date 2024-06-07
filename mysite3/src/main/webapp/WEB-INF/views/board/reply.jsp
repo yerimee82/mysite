@@ -14,12 +14,13 @@
     <c:import url="/WEB-INF/views/includes/header.jsp" />
     <div id="content">
         <div id="board">
-            <form class="board-form" method="post" action="${pageContext.request.contextPath}/board">
-                <input type="hidden" name="a" value="reply">
-                <input type="hidden" name="no" value="${vo.no}">
-                <input type="hidden" name="gNo" value="${vo.gNo}">
-                <input type="hidden" name="oNo" value="${vo.oNo}">
-                <input type="hidden" name="depth" value="${vo.depth}">
+            <form class="board-form" method="post" action="${pageContext.request.contextPath}/board/reply">
+                <input type="hidden" name="no" value="${boardVo.no}">
+                <input type="hidden" name="gNo" value="${boardVo.gNo}">
+                <input type="hidden" name="oNo" value="${boardVo.oNo}">
+                <input type="hidden" name="depth" value="${boardVo.depth}">
+                <input type="hidden" name="page" value="${param.page}" />
+                <input type="hidden" name="kwd" value="${param.kwd}" />
 
                 <table class="tbl-ex">
                     <tr>
@@ -40,7 +41,12 @@
                     </tr>
                 </table>
                 <div class="bottom">
-                    <a href="${pageContext.request.contextPath}/board?a=board">취소</a>
+                    <c:if test="${not empty kwd}">
+                        <a href="${pageContext.request.contextPath}/board?page=${param.page}&kwd=${param.kwd}">취소</a>
+                    </c:if>
+                    <c:if test="${empty kwd}">
+                        <a href="${pageContext.request.contextPath}/board?page=${param.page}">취소</a>
+                    </c:if>
                     <input type="submit" value="등록">
                 </div>
             </form>

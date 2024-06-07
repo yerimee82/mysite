@@ -117,7 +117,7 @@ public class BoardController {
         ////////////////////////
 
         boardVo.setUserNo(authUser.getNo());
-        boardService.addContents(boardVo);
+        boardService.doFirstWrite(boardVo);
 
         String redirectUrl = "redirect:/board?page=" + page;
         if (!kwd.isEmpty()) {
@@ -125,6 +125,48 @@ public class BoardController {
         }
 
         return redirectUrl;
+    }
+
+    @RequestMapping(value="/reply/{no}")
+    public String reply(
+            HttpSession session,
+            @PathVariable("no") Long no,
+            Model model) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        ////////////////////////
+
+        BoardVo boardVo = boardService.getContents(no);
+        model.addAttribute("boardVo", boardVo);
+
+        return "board/reply";
+    }
+
+    @RequestMapping(value="/reply", method = RequestMethod.POST)
+    public String reply(
+            HttpSession session,
+            @ModelAttribute BoardVo boardVo,
+            @RequestParam(value="page", defaultValue="1") Integer page,
+            @RequestParam(value="kwd", required=false, defaultValue="") String kwd
+    ) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        ////////////////////////
+        boardService.doReply(boardVo);
+
+        String redirectUrl = "redirect:/board?page=" + page;
+        if (!kwd.isEmpty()) {
+            redirectUrl += "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
+        }
+
+        return redirectUrl;
+
     }
 
 }
