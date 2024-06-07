@@ -30,25 +30,62 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<c:if test="${not empty kwd}">
-						<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>
-					</c:if>
-					<c:if test="${empty kwd}">
-						<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>
-					</c:if>
 					<c:choose>
-						<c:when test="${authUser.no eq userNo}">
-							<div class="bottom">
-								<a href="${pageContext.request.contextPath}/board?a=modifyform&no=${no}" id="new-book">글수정</a>
-							</div>
+						<c:when test="${not empty kwd}">
+							<a href="${pageContext.request.contextPath}/board?page=${param.page}&kwd=${param.kwd}">글목록</a>
+							<c:if test="${not empty authUser}">
+								<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${param.page}&kwd=${param.kwd}">답글 달기</a>
+								<c:if test="${authUser.no == boardVo.userNo}">
+									<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${param.page}&kwd=${param.kwd}">글수정</a>
+								</c:if>
+							</c:if>
 						</c:when>
-					</c:choose>
-					<c:choose>
-						<c:when test="${not empty authUser}">
-							<a href="${pageContext.request.contextPath}/board?a=replyform&no=${no}">답글 달기</a>
-						</c:when>
+						<c:otherwise>
+							<a href="${pageContext.request.contextPath}/board?page=${param.p}">글목록</a>
+							<c:if test="${not empty authUser}">
+								<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${param.page}">답글 달기</a>
+								<c:if test="${authUser.no == boardVo.userNo}">
+									<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${param.page}">글수정</a>
+								</c:if>
+							</c:if>
+						</c:otherwise>
 					</c:choose>
 				</div>
+
+			<%--				<div class="bottom">--%>
+<%--					<c:if test="${not empty kwd}">--%>
+<%--						<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>--%>
+<%--					</c:if>--%>
+<%--					<c:if test="${empty kwd}">--%>
+<%--						<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>--%>
+<%--					</c:if>--%>
+<%--					<c:choose>--%>
+<%--						<c:when test="${authUser.no eq boardVo.userNo}">--%>
+<%--							<div class="bottom">--%>
+<%--								<c:choose>--%>
+<%--									<c:when test="${not empty kwd}">--%>
+<%--										<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${currentPage}&kwd=${kwd}">글수정</a>--%>
+<%--									</c:when>--%>
+<%--									<c:otherwise>--%>
+<%--										<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${currentPage}">글수정</a>--%>
+<%--									</c:otherwise>--%>
+<%--								</c:choose>--%>
+<%--							</div>--%>
+<%--						</c:when>--%>
+<%--					</c:choose>--%>
+<%--					<c:choose>--%>
+<%--						<c:when test="${not empty authUser}">--%>
+<%--							<c:choose>--%>
+<%--								<c:when test="${not empty kwd}">--%>
+<%--									<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${currentPage}&kwd=${kwd}">답글 달기</a>--%>
+<%--								</c:when>--%>
+<%--								<c:otherwise>--%>
+<%--									<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${currentPage}">답글 달기</a>--%>
+<%--								</c:otherwise>--%>
+<%--							</c:choose>--%>
+<%--						</c:when>--%>
+<%--					</c:choose>--%>
+<%--				</div>--%>
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp"/>

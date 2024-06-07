@@ -14,9 +14,10 @@
 	<c:import url="/WEB-INF/views/includes/header.jsp" />
 	<div id="content">
 		<div id="board">
-			<form class="board-form" method="post" action="${pageContext.request.contextPath}/board">
-				<input type="hidden" name="a" value="modify">
-				<input type="hidden" name="no" value="${vo.no}">
+			<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/modify">
+				<input type="hidden" name="no" value="${boardVo.no}">
+				<input type="hidden" name="page" value="${param.p }" />
+				<input type="hidden" name="kwd" value="${param.kwd }" />
 				<table class="tbl-ex">
 					<tr>
 						<th colspan="2">글수정</th>
@@ -24,18 +25,24 @@
 					<tr>
 						<td class="label">제목</td>
 						<td>
-							<input type="text" name="title" value="${vo.title}">
+							<input type="text" name="title" value="${boardVo.title}">
 						</td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<textarea id="content" name="contents">${vo.contents}</textarea>
+							<textarea id="content" name="contents">${boardVo.contents}</textarea>
 						</td>
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="${pageContext.request.contextPath}/board?a=board">취소</a>
+					<c:if test="${not empty kwd}">
+						<a href="${pageContext.request.contextPath }/board/view/${boardVo.no }?page=${param.page }&kwd=${param.kwd }">취소</a>
+					</c:if>
+					<c:if test="${empty kwd}">
+						<a href="${pageContext.request.contextPath }/board/view/${boardVo.no }?page=${param.page }">취소</a>
+					</c:if>
+
 					<input type="submit" value="수정">
 				</div>
 			</form>

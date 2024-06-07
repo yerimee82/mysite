@@ -35,7 +35,7 @@
     </select>
     <select id="findByNo" parameterType="long" resultType="boardvo">
         <![CDATA[
-        select a.no, a.title, a.contents, a.reg_date, a.hit, a.g_no, a.o_no, a.depth, b.no, b.name
+        select a.no, a.title, a.contents, a.reg_date as regDate, a.hit, a.g_no as gNo, a.o_no as oNo, a.depth, b.no as userNo, b.name as userName
         from board a, user b
         where a.user_no = b.no
         and a.no = #{no}

@@ -14,8 +14,7 @@
     <c:import url="/WEB-INF/views/includes/header.jsp"/>
 <div id="content">
     <div id="board">
-        <form class="board-form" method="post" action="${pageContext.request.contextPath}/board?a=write">
-            <input type="hidden" name="a" value="write">
+        <form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
             <table class="tbl-ex">
                 <tr>
                     <th colspan="2">글쓰기</th>
@@ -32,7 +31,12 @@
                 </tr>
             </table>
             <div class="bottom">
-                <a href="${pageContext.request.contextPath}/board?a=board">취소</a>
+                <c:if test="${not empty kwd}">
+                    <a href="${pageContext.request.contextPath}/board?page=${param.page}&kwd=${param.kwd}">취소</a>
+                </c:if>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/board?page=${param.page}">취소</a>
+                </c:otherwise>
                 <input type="submit" value="등록">
             </div>
         </form>

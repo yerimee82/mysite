@@ -6,9 +6,7 @@ import com.poscodx.mysite.vo.UserVo;
 import com.poscodx.mysite.webUtil.WebUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -62,7 +60,68 @@ public class BoardController {
 
     @RequestMapping("/modify/{no}")
     public String modify(HttpSession session, @PathVariable("no") Long no, Model model) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        System.out.println(authUser.getNo());
+        ////////////////////////
 
+        BoardVo boardVo = boardService.getContents(no);
+        System.out.println(boardVo.getUserNo());
+        model.addAttribute("boardVo", boardVo);
+        return "board/modify";
+    }
+
+    @RequestMapping(value="/modify", method= RequestMethod.POST)
+    public String modify(
+            HttpSession session,
+            BoardVo boardVo,
+            @RequestParam(value="page", defaultValue="1") int page,
+            @RequestParam(value="kwd", required=false, defaultValue="") String kwd) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        ////////////////////////
+
+        boardVo.setUserNo(authUser.getNo());
+        boardService.modifyContents(boardVo);
+        return "redirect:/board/view/" + boardVo.getNo() +
+                "?page=" + page +
+                "&kwd=" + WebUtil.encodeURL( kwd, "UTF-8" );
+    }
+
+    @RequestMapping(value="/write", method=RequestMethod.GET)
+    public String write(HttpSession session) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        ////////////////////////
+        return "board/write";
+    }
+
+    @RequestMapping(value="/write", method=RequestMethod.POST)
+    public String write(
+            HttpSession session,
+            @ModelAttribute BoardVo boardVo,
+            @RequestParam(value="page", defaultValue="1") Integer page,
+            @RequestParam(value="kwd", required=false, defaultValue="") String kwd) {
+        // access control
+        UserVo authUser = (UserVo)session.getAttribute("authUser");
+        if(authUser == null) {
+            return "redirect:/";
+        }
+        ////////////////////////
+
+        boardVo.setUserNo(authUser.getNo());
+        boardService.addContents(boardVo);
+
+        return	"redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
     }
 
 }
