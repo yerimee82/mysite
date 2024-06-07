@@ -59,13 +59,13 @@
                         <td>${vo.hit}</td>
                         <td>${vo.regDate}</td>
                         <c:choose>
-                            <c:when test="${authUser.no eq vo.userNo}">
+                            <c:when test="${not empty authUser && authUser.no eq vo.userNo}">
                                 <td>
                                     <c:if test="${not empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}&page=${currentPage}&kwd=${kwd}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                        <a href="${pageContext.request.contextPath}/board/delete/${vo.no}?page=${currentPage}&kwd=${kwd}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board/delete/${vo.no}')">삭제</a>
                                     </c:if>
                                     <c:if test="${empty kwd}">
-                                        <a href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}&page=${currentPage}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board?a=delete&no=${vo.no}')">삭제</a>
+                                        <a href="${pageContext.request.contextPath}/board/delete/${vo.no}?page=${currentPage}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board/delete/${vo.no}')">삭제</a>
                                     </c:if>
                                 </td>
                             </c:when>
@@ -118,8 +118,13 @@
                 </ul>
             </div>
             <div class="bottom">
-                <c:if test="${not empty sessionScope.authUser}">
-                    <a href="${pageContext.request.contextPath}/board/write" id="new-book">글쓰기</a>
+                <c:if test="${not empty authUser}">
+                    <c:if test="${not empty kwd}">
+                        <a href="${pageContext.request.contextPath}/board/write?page=${currentPage}&kwd=${kwd}" id="new-book">글쓰기</a>
+                    </c:if>
+                    <c:if test="${empty kwd}">
+                        <a href="${pageContext.request.contextPath}/board/write?page=${currentPage}" id="new-book">글쓰기</a>
+                    </c:if>
                 </c:if>
             </div>
         </div>

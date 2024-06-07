@@ -18,9 +18,15 @@ public class BoardService {
     }
 
     public void addContents(BoardVo vo) {
-        if(vo.getgNo() != 0) {
-            boardRepository.adjustOrderNo(vo.getgNo(), vo.getoNo());
-        }
+        int maxGroupNo = boardRepository.findMaxGroupNo();
+        vo.setgNo(maxGroupNo + 1);
+        vo.setoNo(1);
+        vo.setDepth(1);
+        vo.setHit(0);
+
+//        if(vo.getgNo() != 0) {
+//            boardRepository.adjustOrderNo(vo.getgNo(), vo.getoNo());
+//        }
         boardRepository.insert(vo);
     }
 

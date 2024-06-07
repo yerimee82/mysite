@@ -22,7 +22,7 @@ public class BoardController {
 
     @RequestMapping("")
     public String index(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(value = "kwd", required = false) String kwd,
+                       @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd,
                        Model model) {
         Map<String, Object> map = boardService.getContentsList(page, kwd);
         model.addAllAttributes(map);
@@ -47,7 +47,7 @@ public class BoardController {
     @RequestMapping("/delete/{no}")
     public String delete(HttpSession session, @PathVariable("no") Long no,
                          @RequestParam(defaultValue = "1") int page,
-                         @RequestParam(value = "kwd", required = false) String kwd) {
+                         @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) {
         // access control
         UserVo authUser = (UserVo) session.getAttribute("authUser");
         if(authUser == null) {
@@ -65,11 +65,9 @@ public class BoardController {
         if(authUser == null) {
             return "redirect:/";
         }
-        System.out.println(authUser.getNo());
         ////////////////////////
 
         BoardVo boardVo = boardService.getContents(no);
-        System.out.println(boardVo.getUserNo());
         model.addAttribute("boardVo", boardVo);
         return "board/modify";
     }
@@ -121,7 +119,12 @@ public class BoardController {
         boardVo.setUserNo(authUser.getNo());
         boardService.addContents(boardVo);
 
-        return	"redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
+        String redirectUrl = "redirect:/board?page=" + page;
+        if (!kwd.isEmpty()) {
+            redirectUrl += "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
+        }
+
+        return redirectUrl;
     }
 
 }

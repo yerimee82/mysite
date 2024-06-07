@@ -34,9 +34,9 @@
                 <c:if test="${not empty kwd}">
                     <a href="${pageContext.request.contextPath}/board?page=${param.page}&kwd=${param.kwd}">취소</a>
                 </c:if>
-                <c:otherwise>
+                <c:if test="${empty kwd}">
                     <a href="${pageContext.request.contextPath}/board?page=${param.page}">취소</a>
-                </c:otherwise>
+                </c:if>
                 <input type="submit" value="등록">
             </div>
         </form>
