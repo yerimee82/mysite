@@ -7,7 +7,7 @@
         from board a, user b
         where a.user_no = b.no
         order by a.g_no desc , a.o_no asc
-        limit #{limit} offset #{offset};
+        limit #{limit} offset #{offset}
        ]]>
     </select>
     <select id="searchWithKeywords" parameterType="map" resultType="boardvo">
@@ -15,9 +15,9 @@
         select a.no, a.title, a.contents, a.reg_date as regDate, a.o_no as oNo, a.depth, a.hit, b.no as userNo, b.name as userName
         from board a, user b
         where a.user_no = b.no
-        and (a.title like #{title} or a.contents like #{contents})
+        and (a.title like #{keyword} or a.contents like #{keyword})
         order by a.g_no desc , a.o_no asc
-        limit #{limit} offset
+        limit #{limit} offset #{offset}
         ]]>
     </select>
     <select id="countTotalPosts" resultType="int">
@@ -29,7 +29,7 @@
         <![CDATA[
             select count(*)
             from board
-            where title like #{title} or contents like #{contents}
+            where title like #{keyword} or contents like #{keyword}
         ]]>
     </select>
     <select id="findByNo" parameterType="long" resultType="boardvo">
@@ -80,7 +80,7 @@
     <update id="adjustOrderNo" parameterType="map">
         <![CDATA[
         update board set o_no = o_no + 1
-            where g_no = #{gNo} and o_no > #{oNo}
+        where g_no = #{gNo} and o_no > #{oNo}
         ]]>
     </update>
 </mapper>

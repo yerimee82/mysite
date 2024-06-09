@@ -26,6 +26,7 @@ public class BoardController {
                        Model model) {
         Map<String, Object> map = boardService.getContentsList(page, kwd);
         model.addAllAttributes(map);
+        model.addAttribute("totalPosts", map.get("totalPosts"));
         model.addAttribute("kwd", kwd);
         return "board/index";
     }
@@ -158,6 +159,7 @@ public class BoardController {
             return "redirect:/";
         }
         ////////////////////////
+        boardVo.setUserNo(authUser.getNo());
         boardService.doReply(boardVo);
 
         String redirectUrl = "redirect:/board?page=" + page;

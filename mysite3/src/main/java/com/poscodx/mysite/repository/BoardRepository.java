@@ -35,11 +35,12 @@ public class BoardRepository {
     }
 
     public List<BoardVo> searchWithKeywords(String keyword, int limit, int offset) {
-        return sqlSession.selectList("searchWithKeywords", Map.of(
-                "keyword", "%" + keyword + "%",
-                "limit", limit,
-                "offset", offset
-        ));
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword","%" + keyword + "%");
+        params.put("limit",limit);
+        params.put("offset",offset);
+
+        return sqlSession.selectList("board.searchWithKeywords", params);
     }
 
     public int countTotalPosts() {
@@ -47,7 +48,7 @@ public class BoardRepository {
     }
 
     public int countTotalPosts(String keyword) {
-        return sqlSession.selectOne("board.countTotalPostsWithKeyword", keyword);
+        return sqlSession.selectOne("board.countTotalPostsWithKeyword", Map.of("keyword", "%" + keyword+"%"));
     }
 
     public BoardVo findByNo(Long no) {
@@ -77,6 +78,6 @@ public class BoardRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("gNo", gNo);
         params.put("oNo", oNo);
-        return sqlSession.update("boardMapper.adjustOrderNo", params);
+        return sqlSession.update("board.adjustOrderNo", params);
     }
 }
