@@ -27,7 +27,7 @@
                     <th>작성일</th>
                     <th>&nbsp;</th>
                 </tr>
-                <c:set var="count" value="${totalPosts}"/>
+                <c:set var="count" value="${totalPosts - (currentPage - 1) * 5}"/>
                 <c:forEach items="${list}" var="vo" varStatus="status">
                     <tr>
                         <td>${count}</td>

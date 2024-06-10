@@ -4,6 +4,7 @@ import com.poscodx.mysite.vo.BoardVo;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import java.sql.*;
 import java.util.ArrayList;

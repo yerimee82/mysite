@@ -41,11 +41,7 @@ public class BoardService {
     }
 
     public BoardVo getContents(Long no) {
-        BoardVo vo = boardRepository.findByNo(no);
-        if(vo != null) {
-            boardRepository.updateHit(no);
-        }
-        return vo;
+        return boardRepository.findByNo(no);
     }
 
     public void modifyContents(BoardVo vo) {
@@ -54,6 +50,10 @@ public class BoardService {
 
     public void deleteContents(Long boardNo, Long userNo) {
         boardRepository.deleteByNo(boardNo, userNo);
+    }
+
+    public void increaseHit(Long no) {
+        boardRepository.updateHit(no);
     }
 
     public Map<String, Object> getContentsList(int currentPage, String keyword) {
@@ -86,7 +86,7 @@ public class BoardService {
         map.put("currentPage", currentPage);
         map.put("startPage", startPage);
         map.put("endPage", endPage);
-        map.put("keyword", keyword);
+        map.put("kwd", keyword);
 
         return map;
     }

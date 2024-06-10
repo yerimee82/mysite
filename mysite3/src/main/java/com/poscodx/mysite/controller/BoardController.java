@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -26,8 +29,6 @@ public class BoardController {
                        Model model) {
         Map<String, Object> map = boardService.getContentsList(page, kwd);
         model.addAllAttributes(map);
-        model.addAttribute("totalPosts", map.get("totalPosts"));
-        model.addAttribute("kwd", kwd);
         return "board/index";
     }
 
@@ -35,14 +36,46 @@ public class BoardController {
     public String view(@PathVariable("no") Long no,
                        @RequestParam(defaultValue = "1") int page,
                        @RequestParam(required = false, defaultValue = "") String kwd,
+                       HttpServletRequest request,
+                       HttpServletResponse response,
                        Model model) {
 
+        handleHitCount(no, request, response);
+
         BoardVo boardVo = boardService.getContents(no);
+
         model.addAttribute("boardVo", boardVo);
         model.addAttribute("currentPage", page);
         model.addAttribute("kwd", kwd);
 
         return "board/view";
+    }
+
+    private void handleHitCount(Long no, HttpServletRequest request, HttpServletResponse response) {
+        String cookieName = "viewed_" + no;
+
+        // 쿠키 찾기
+        Cookie[] cookies = request.getCookies();
+        boolean found = false;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        // 쿠키가 없을 경우 조회수 증가 및 쿠키 설정
+        if (!found) {
+            boardService.increaseHit(no);
+
+            Cookie newCookie = new Cookie(cookieName, "true");
+            newCookie.setMaxAge(24 * 60 * 60);  // 1일
+            newCookie.setPath(request.getContextPath());
+            response.addCookie(newCookie);
+        }
     }
 
     @RequestMapping("/delete/{no}")
