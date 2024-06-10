@@ -26,16 +26,7 @@ public class GuestbookRepository {
     }
 
     public List<GuestbookVo> findAll() {
-        StopWatch sw = new StopWatch();
-        sw.start();
 
-        List<GuestbookVo> list = sqlSession.selectList("guestbook.findAll");
-
-        sw.stop();
-        long totalTime = sw.getTotalTimeMillis();
-
-        System.out.println(totalTime);
-
-        return list;
+        return sqlSession.selectList("guestbook.findAll");
     }
 }

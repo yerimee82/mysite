@@ -67,7 +67,6 @@ public class BoardController {
             }
         }
 
-        // 쿠키가 없을 경우 조회수 증가 및 쿠키 설정
         if (!found) {
             boardService.increaseHit(no);
 
