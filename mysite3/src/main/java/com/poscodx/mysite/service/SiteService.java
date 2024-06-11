@@ -12,12 +12,11 @@ public class SiteService {
         this.siteRepository = siteRepository;
     }
 
-    public SiteVo getSite() {
-        // return siteRepository.find();
-        return null;
+    public SiteVo getSite(Long no) {
+         return siteRepository.find(no);
     }
 
     public void updateSite(SiteVo vo) {
-//        siteRepository.update(vo);
+        siteRepository.update(vo);
     }
 }
