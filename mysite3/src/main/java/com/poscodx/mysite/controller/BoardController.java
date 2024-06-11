@@ -1,5 +1,7 @@
 package com.poscodx.mysite.controller;
 
+import com.poscodx.mysite.security.Auth;
+import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.UserVo;
@@ -77,46 +79,32 @@ public class BoardController {
         }
     }
 
+    @Auth
     @RequestMapping("/delete/{no}")
-    public String delete(HttpSession session, @PathVariable("no") Long no,
+    public String delete(@AuthUser UserVo authUser,@PathVariable("no") Long no,
                          @RequestParam(defaultValue = "1") int page,
                          @RequestParam(value = "kwd", required = false, defaultValue = "") String kwd) {
-        // access control
-        UserVo authUser = (UserVo) session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
+
         boardService.deleteContents(no, authUser.getNo());
         return "redirect:/board?page=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
     }
 
+    @Auth
     @RequestMapping("/modify/{no}")
-    public String modify(HttpSession session, @PathVariable("no") Long no, Model model) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
+    public String modify(@AuthUser UserVo authUser, @PathVariable("no") Long no, Model model) {
 
         BoardVo boardVo = boardService.getContents(no);
         model.addAttribute("boardVo", boardVo);
         return "board/modify";
     }
 
+    @Auth
     @RequestMapping(value="/modify", method= RequestMethod.POST)
     public String modify(
-            HttpSession session,
+            @AuthUser UserVo authUser,
             BoardVo boardVo,
             @RequestParam(value="page", defaultValue="1") int page,
             @RequestParam(value="kwd", required=false, defaultValue="") String kwd) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
 
         boardVo.setUserNo(authUser.getNo());
         boardService.modifyContents(boardVo);
@@ -124,30 +112,19 @@ public class BoardController {
                 "?page=" + page +
                 "&kwd=" + WebUtil.encodeURL( kwd, "UTF-8" );
     }
-
+    @Auth
     @RequestMapping(value="/write", method=RequestMethod.GET)
-    public String write(HttpSession session) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
+    public String write() {
         return "board/write";
     }
 
+    @Auth
     @RequestMapping(value="/write", method=RequestMethod.POST)
     public String write(
-            HttpSession session,
+            @AuthUser UserVo authUser,
             @ModelAttribute BoardVo boardVo,
             @RequestParam(value="page", defaultValue="1") Integer page,
             @RequestParam(value="kwd", required=false, defaultValue="") String kwd) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
 
         boardVo.setUserNo(authUser.getNo());
         boardService.doFirstWrite(boardVo);
@@ -160,17 +137,11 @@ public class BoardController {
         return redirectUrl;
     }
 
+    @Auth
     @RequestMapping(value="/reply/{no}")
     public String reply(
-            HttpSession session,
             @PathVariable("no") Long no,
             Model model) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
 
         BoardVo boardVo = boardService.getContents(no);
         model.addAttribute("boardVo", boardVo);
@@ -180,17 +151,12 @@ public class BoardController {
 
     @RequestMapping(value="/reply", method = RequestMethod.POST)
     public String reply(
-            HttpSession session,
+            @AuthUser UserVo authUser,
             @ModelAttribute BoardVo boardVo,
             @RequestParam(value="page", defaultValue="1") Integer page,
             @RequestParam(value="kwd", required=false, defaultValue="") String kwd
     ) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
-        ////////////////////////
+
         boardVo.setUserNo(authUser.getNo());
         boardService.doReply(boardVo);
 

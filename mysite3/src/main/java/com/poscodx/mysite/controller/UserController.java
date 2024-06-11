@@ -1,5 +1,7 @@
 package com.poscodx.mysite.controller;
 
+import com.poscodx.mysite.security.Auth;
+import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.UserVo;
 import com.sun.jna.platform.win32.Netapi32Util;
@@ -41,48 +43,18 @@ public class UserController {
         return "user/login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(HttpSession session, UserVo vo, Model model) {
-        UserVo authUser = userService.getUser(vo.getEmail(), vo.getPassword());
-        if(authUser == null) {
-            model.addAttribute("email", vo.getEmail());
-            model.addAttribute("result", "fail");
-
-            return "user/login";
-        }
-
-        // login 처리
-        session.setAttribute("authUser", authUser);
-
-        return "redirect:/";
-    }
-
-    @RequestMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("authUser");
-        session.invalidate();
-        return "redirect:/";
-    }
-
+    @Auth
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(HttpSession session, Model model) {
-        UserVo authUser = (UserVo) session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
+    public String update(@AuthUser UserVo authUser, Model model) {
         UserVo vo = userService.getUser(authUser.getNo());
         model.addAttribute("userVo", vo);
 
         return "user/update";
     }
 
+    @Auth
     @RequestMapping(value="/update", method=RequestMethod.POST)
-    public String update(HttpSession session, UserVo vo) {
-        // access control
-        UserVo authUser = (UserVo)session.getAttribute("authUser");
-        if(authUser == null) {
-            return "redirect:/";
-        }
+    public String update(@AuthUser UserVo authUser, UserVo vo) {
 
         vo.setNo(authUser.getNo());
         userService.update(vo);
