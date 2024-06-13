@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -46,16 +47,22 @@
 		<div id="user">
 			<form id="join-form" name="joinForm" method="post" action="${pageContext.request.contextPath}/user/join">
 				<label class="block-label" for="name">이름</label>
-				<input id="name" name="name" type="text" value="">
-
+				<input id="name" name="name" type="text" value="${userVo.name}">
+				<p style="color:#f00; text-align: left; padding: 0">
+				<spring:hasBindErrors name="userVo">
+					<c:if test="${errors.hasFieldErrors('name')}">
+						${errors.getFieldError("name").defaultMessage}
+					</c:if>
+				</spring:hasBindErrors>
+				</p>
 				<label class="block-label" for="email">이메일</label>
 				<input id="email" name="email" type="text" value="">
 				<input type="button" id="btn-check" value="이메일확인">
 				<img id="img-check" src="${pageContext.request.contextPath}/assets/images/check.png" style="vertical-align:bottom; width: 20px; display: none">
-
-				<label class="block-label">패스워드</label>
+				<label class="block-label">
+					<spring:message code="user.join.label.password"/>
+				</label>
 				<input name="password" type="password" value="">
-
 				<fieldset>
 					<legend>성별</legend>
 					<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
