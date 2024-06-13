@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -27,8 +28,9 @@ public class UserController {
     public String join() {
         return "user/join";
     }
+
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public String join(UserVo vo) {
+    public String join(@Valid UserVo vo) {
         userService.join(vo);
         return "redirect:/user/joinsuccess";
     }
