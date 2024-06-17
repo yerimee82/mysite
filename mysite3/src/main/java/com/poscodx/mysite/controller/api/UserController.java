@@ -1,5 +1,6 @@
 package com.poscodx.mysite.controller.api;
 
+import com.poscodx.mysite.dto.JsonResult;
 import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.UserVo;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,10 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping("/checkemail")
-    public Object checkEmail(
+    public JsonResult checkEmail(
             @RequestParam(value = "email", defaultValue = "") String email) {
         UserVo vo = userService.getUser(email);
-        return Map.of("exist", vo != null);
+
+        return JsonResult.success(vo != null);
     }
 }
