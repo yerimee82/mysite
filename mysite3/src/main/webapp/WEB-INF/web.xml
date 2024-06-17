@@ -60,7 +60,6 @@
     <location>/WEB-INF/views/errors/500.jsp</location>
   </error-page>
 
-
   <!-- default files -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
