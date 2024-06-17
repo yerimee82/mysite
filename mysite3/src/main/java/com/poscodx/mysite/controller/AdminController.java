@@ -5,6 +5,7 @@ import com.poscodx.mysite.service.FileUploadService;
 import com.poscodx.mysite.service.SiteService;
 import com.poscodx.mysite.vo.SiteVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,14 +36,20 @@ public class AdminController {
     @RequestMapping("/main/update")
     public String update(@ModelAttribute SiteVo siteVo, MultipartFile file) {
         String profile = fileUploadService.restore(file);
-        System.out.println(file);
         if (profile!= null) {
             siteVo.setProfile(profile);
         }
 
-        System.out.println(siteVo);
         siteService.updateSite(siteVo);
         servletContext.setAttribute("siteVo", siteVo);
+        
+        SiteVo site = applicationContext.getBean(SiteVo.class);
+//        site.setTitle(siteVo.getTitle());
+//        site.setWelcome(siteVo.getWelcome());
+//        site.setProfile(siteVo.getProfile());
+//        site.setDescription(siteVo.getDescription());
+        BeanUtils.copyProperties(siteVo, site);
+
         return "redirect:/admin";
     }
 
