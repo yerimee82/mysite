@@ -1,6 +1,6 @@
 [src/main/java]
 	com
-	 |--- douzone
+	 |--- poscodx
 	 |		|--- mysite
 	 |		|		|--- config
 	 |		|		|		|--- AppConfig.java
@@ -19,17 +19,18 @@
 
 [src/main/resources]
 	com
-	 |--- douzone
+	 |--- poscodx
 	 |		|--- mysite
-	 |		|		|--- app
-	 |		|		|	  |--- jdbc.properties
-	 |		|		|	  |--- mybatis
-	 |		|		|	  		|--- configuration.xml
-	 |		|		|	  		|--- mappers
-	 |		|		|	  		|		|--- board.xml
-	 |		|		|	  		|		|--- user.xml
-	 |		|		|--- web
-	 |		|		|	  |--- fileupload.properties
-	 |		|		|	  |--- messages
-	 |		|		|	  |       |--- messages_ko.properties
-	 |		|		|	  |       |--- messages_en.properties
+	 |		|		|--- config
+	 |      |		|		|--- app
+	 |      |		|		|	  |--- jdbc.properties
+	 |      |		|		|	  |--- mybatis
+	 |      |		|		|	  		|--- configuration.xml
+	 |      |		|		|	  		|--- mappers
+	 |      |		|		|	  		|		|--- board.xml
+	 |      |		|		|	  		|		|--- user.xml
+	 |      |		|		|--- web
+	 |      |		|		|	  |--- fileupload.properties
+	 |      |		|		|	  |--- messages
+	 |      |		|		|	  |       |--- message_ko.properties
+	 |      |		|		|	  |       |--- message_en.properties

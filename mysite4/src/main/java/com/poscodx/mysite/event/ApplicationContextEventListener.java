@@ -13,6 +13,7 @@ import org.springframework.context.event.EventListener;
 @RequiredArgsConstructor
 public class ApplicationContextEventListener {
     private final ApplicationContext applicationContext;
+
     @EventListener({ContextRefreshedEvent.class})
     public void handleContextRefreshEvent() {
         System.out.println("--- Context Refreshed Event Received ---");
