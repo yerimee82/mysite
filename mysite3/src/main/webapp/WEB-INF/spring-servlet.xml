@@ -79,6 +79,12 @@
 		</property>
 	</bean>
 
+	<!-- Locale Resolver -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieName" value="lang" />
+		<property name="cookieHttpOnly" value="false" />
+	</bean>
+
 	<!-- MessageSource -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
