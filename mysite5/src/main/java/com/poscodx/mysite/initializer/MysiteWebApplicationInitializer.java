@@ -2,7 +2,10 @@ package com.poscodx.mysite.initializer;
 
 import com.poscodx.mysite.config.AppConfig;
 import com.poscodx.mysite.config.WebConfig;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
@@ -28,4 +31,10 @@ public class MysiteWebApplicationInitializer extends AbstractAnnotationConfigDis
         return new String[] {"/"};
     }
 
+    @Override
+    protected FrameworkServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+        DispatcherServlet servlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
+        servlet.setThrowExceptionIfNoHandlerFound(true);
+        return servlet;
+    }
 }
