@@ -1,5 +1,8 @@
 package com.poscodx.mysite.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,14 +13,15 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 @Service
+@PropertySource("classpath:com/poscodx/mysite/config/web/fileupload.properties")
+@RequiredArgsConstructor
 public class FileUploadService {
-    private static String SAVE_PATH = "/Users/yerim/Desktop/mysite-upload";
-    private static String URL_PATH = "/assets/upload-images";
+    private final Environment env;
     public String restore(MultipartFile file) {
 
         String url = null;
         try {
-            File uploadDirectory = new File(SAVE_PATH);
+            File uploadDirectory = new File(env.getProperty("fileupload.uploadLocation"));
             if (!uploadDirectory.exists()) {
                 uploadDirectory.mkdirs();
             }
@@ -36,11 +40,11 @@ public class FileUploadService {
             System.out.println("fileSize = " + fileSize);
 
             byte[] data = file.getBytes();
-            OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFilename);
+            OutputStream os = new FileOutputStream(env.getProperty("fileupload.uploadLocation") + "/" + saveFilename);
             os.write(data);
             os.close();
 
-            url = URL_PATH + "/" + saveFilename;
+            url = env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
 
         }catch (IOException ex) {
             throw new RuntimeException(ex);

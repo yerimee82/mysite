@@ -1,5 +1,6 @@
 package com.poscodx.mysite.config;
 
+import com.poscodx.mysite.config.web.FileUploadConfig;
 import com.poscodx.mysite.config.web.LocaleConfig;
 import com.poscodx.mysite.config.web.MvcConfig;
 import com.poscodx.mysite.config.web.SecurityConfig;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 @Configuration
 @EnableAspectJAutoProxy
-@Import({MvcConfig.class, LocaleConfig.class, SecurityConfig.class})
+@Import({MvcConfig.class, LocaleConfig.class, SecurityConfig.class, FileUploadConfig.class})
 @ComponentScan({"com.poscodx.mysite.controller", "com.poscodx.mysite.exception"})
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
