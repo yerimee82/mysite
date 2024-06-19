@@ -36,7 +36,6 @@ public class UserController {
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
     public String join(@ModelAttribute @Valid UserVo vo, BindingResult result, Model model) {
-//        userService.join(vo);
         if(result.hasErrors()) {
 //            model.addAttribute("userVo", vo);
 //            List<ObjectError> errors = result.getAllErrors();
@@ -47,6 +46,7 @@ public class UserController {
             model.addAllAttributes(map);
             return "user/join";
         }
+        userService.join(vo);
         return "redirect:/user/joinsuccess";
     }
 
@@ -83,5 +83,13 @@ public class UserController {
     @RequestMapping(value="/updatesuccess", method=RequestMethod.GET)
     public String updatesuccess() {
         return "user/updatesuccess";
+    }
+
+    @RequestMapping("/auth")
+    public void auth() {
+    }
+
+    @RequestMapping("/logout")
+    public void logout() {
     }
 }
