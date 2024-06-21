@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <script src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
 <script>
@@ -34,20 +36,19 @@
         </c:choose>
     </div>
     <ul>
-        <c:choose>
-            <c:when test="${empty authUser}">
+        <sec:authorize access="!isAuthenticated()">
                 <li><a href="${pageContext.request.contextPath}/user/login">로그인</a>
                 <li>
                 <li><a href="${pageContext.request.contextPath}/user/join">회원가입</a>
                 <li>
-            </c:when>
-            <c:otherwise>
+        </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <sec:authentication property="principal" var="user"/>
                 <li><a href="${pageContext.request.contextPath}/user/update">회원정보수정</a>
                 <li>
                 <li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a>
                 <li>
-                <li>${authUser.name}님 안녕하세요 ^^;</li>
-            </c:otherwise>
-        </c:choose>
+                <li>${user.name}님 안녕하세요 ^^;</li>
+            </sec:authorize>
     </ul>
 </div>

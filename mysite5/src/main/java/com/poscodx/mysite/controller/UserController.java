@@ -85,11 +85,11 @@ public class UserController {
         return "user/updatesuccess";
     }
 
-    @RequestMapping("/auth")
-    public void auth() {
-    }
-
-    @RequestMapping("/logout")
-    public void logout() {
-    }
+//    @RequestMapping("/auth")
+//    public void auth() {
+//    }
+//
+//    @RequestMapping("/logout")
+//    public void logout() {
+//    }
 }
