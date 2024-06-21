@@ -4,6 +4,7 @@ import com.poscodx.mysite.config.AppConfig;
 import com.poscodx.mysite.config.WebConfig;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -23,7 +24,7 @@ public class MysiteWebApplicationInitializer extends AbstractAnnotationConfigDis
 
     @Override
     protected Filter[] getServletFilters() {
-        return new Filter[]{new CharacterEncodingFilter("UTF-8")};
+        return new Filter[]{new CharacterEncodingFilter("UTF-8"), new DelegatingFilterProxy("springSecurityFilterChain")};
     }
 
     @Override

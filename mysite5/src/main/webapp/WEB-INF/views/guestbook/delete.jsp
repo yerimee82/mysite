@@ -17,7 +17,7 @@
                     alert("${message}");
                 </script>
             </c:if>
-            <form method="post" name="df" action="${pageContext.request.contextPath}/guestbook/delete/${no}">
+            <form method="post" name="df" action="${pageContext.request.contextPath}/guestbook/delete/${no2}">
                 <table>
                     <tr>
                         <td>비밀번호</td>

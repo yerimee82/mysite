@@ -1,8 +1,10 @@
 package com.poscodx.mysite.repository;
 
 import com.poscodx.mysite.exception.UserRepositoryException;
+import com.poscodx.mysite.security.UserDetailsImpl;
 import com.poscodx.mysite.vo.UserVo;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -32,6 +34,10 @@ public class UserRepository {
         return sqlSession.selectOne("user.findByEmail", email);
     }
 
+    public UserDetailsImpl findByEmail2(String email) {
+        return sqlSession.selectOne("user.findByEmail2", email);
+    }
+
     public int updateWithPassword(UserVo vo) {
         return sqlSession.update("user.updateWithPassword", vo);
 
@@ -40,5 +46,4 @@ public class UserRepository {
     public int update(UserVo vo) {
         return sqlSession.update("user.update", vo);
     }
-
 }
