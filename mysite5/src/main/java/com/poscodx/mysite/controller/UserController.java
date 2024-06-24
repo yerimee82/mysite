@@ -1,23 +1,17 @@
 package com.poscodx.mysite.controller;
 
-import com.poscodx.mysite.security.Auth;
-import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.UserVo;
-import com.sun.jna.platform.win32.Netapi32Util;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -60,19 +54,18 @@ public class UserController {
         return "user/login";
     }
 
-    @Auth
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String update(@AuthUser UserVo authUser, Model model) {
+    public String update(Authentication authentication, Model model) {
+        UserVo authUser = (UserVo)authentication.getPrincipal();
         UserVo vo = userService.getUser(authUser.getNo());
         model.addAttribute("userVo", vo);
 
         return "user/update";
     }
 
-    @Auth
     @RequestMapping(value="/update", method=RequestMethod.POST)
-    public String update(@AuthUser UserVo authUser, UserVo vo) {
-
+    public String update(Authentication authentication, UserVo vo) {
+        UserVo authUser = (UserVo)authentication.getPrincipal();
         vo.setNo(authUser.getNo());
         userService.update(vo);
 
@@ -85,11 +78,4 @@ public class UserController {
         return "user/updatesuccess";
     }
 
-//    @RequestMapping("/auth")
-//    public void auth() {
-//    }
-//
-//    @RequestMapping("/logout")
-//    public void logout() {
-//    }
 }

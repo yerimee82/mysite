@@ -39,8 +39,8 @@ public class SecurityConfig {
         http
                 .logout()
                 .logoutUrl("/user/logout")
-                .logoutSuccessUrl("/")
                 .and()
+
                 .formLogin()
                 .loginPage("/user/login")
                 .loginProcessingUrl("/user/auth")
@@ -54,6 +54,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry
                             /* ACL */
+                            .requestMatchers(new RegexRequestMatcher("^/admin/?.*$", null))
+                            .hasRole("ADMIN")
+
+                            .requestMatchers(new RegexRequestMatcher("^/board/?(write|reply|delete|modify)?/.*$", null))
+                            .hasAnyRole("ADMIN", "USER")
+
                             .requestMatchers(new RegexRequestMatcher("^/user/update$", null))
                             .hasAnyRole("ADMIN", "USER")
 
@@ -76,7 +82,8 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(16);
+        /* 4$ ~ 31 */ //   속도에 영향을 주는 요소
+        return new BCryptPasswordEncoder(4);
     }
 
     @Bean
