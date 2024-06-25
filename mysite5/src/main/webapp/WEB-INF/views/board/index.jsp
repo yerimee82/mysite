@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -58,21 +59,18 @@
                         <td>${vo.userName}</td>
                         <td>${vo.hit}</td>
                         <td>${vo.regDate}</td>
-                        <c:choose>
-                            <c:when test="${not empty authUser && authUser.no eq vo.userNo}">
-                                <td>
-                                    <c:if test="${not empty kwd}">
+                        <td>
+                            <sec:authorize access="isAuthenticated()">
+                                <sec:authentication property="principal" var="authUser"/>
+                                    <c:if test="${authUser.no == vo.userNo }">
+                                        <c:if test="${not empty kwd}">
                                         <a href="${pageContext.request.contextPath}/board/delete/${vo.no}?page=${currentPage}&kwd=${kwd}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board/delete/${vo.no}')">삭제</a>
-                                    </c:if>
-                                    <c:if test="${empty kwd}">
+                                        </c:if>
+                                        <c:if test="${empty kwd}">
                                         <a href="${pageContext.request.contextPath}/board/delete/${vo.no}?page=${currentPage}" class="del" onclick="return showAlert('${pageContext.request.contextPath}/board/delete/${vo.no}')">삭제</a>
+                                        </c:if>
                                     </c:if>
-                                </td>
-                            </c:when>
-                            <c:otherwise>
-                                <td></td>
-                            </c:otherwise>
-                        </c:choose>
+                            </sec:authorize>
                         <script>
                             function showAlert(url) {
                                 if (confirm("정말 삭제 하시겠습니까?")) {
@@ -118,14 +116,14 @@
                 </ul>
             </div>
             <div class="bottom">
-                <c:if test="${not empty authUser}">
+                <sec:authorize access="isAuthenticated()">
                     <c:if test="${not empty kwd}">
                         <a href="${pageContext.request.contextPath}/board/write?page=${currentPage}&kwd=${kwd}" id="new-book">글쓰기</a>
                     </c:if>
                     <c:if test="${empty kwd}">
                         <a href="${pageContext.request.contextPath}/board/write?page=${currentPage}" id="new-book">글쓰기</a>
                     </c:if>
-                </c:if>
+                </sec:authorize>
             </div>
         </div>
     </div>

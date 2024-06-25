@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html>
@@ -30,26 +31,35 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<c:choose>
-						<c:when test="${not empty kwd}">
-							<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>
-							<c:if test="${not empty authUser}">
+					<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal" var="authUser"/>
+						<c:choose>
+							<c:when test="${not empty kwd}">
+								<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>
 								<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${currentPage}&kwd=${kwd}">답글 달기</a>
 								<c:if test="${authUser.no == boardVo.userNo}">
 									<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${currentPage}&kwd=${kwd}">글수정</a>
 								</c:if>
-							</c:if>
-						</c:when>
-						<c:otherwise>
-							<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>
-							<c:if test="${not empty authUser}">
+							</c:when>
+							<c:otherwise>
+								<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>
 								<a href="${pageContext.request.contextPath}/board/reply/${boardVo.no}?page=${currentPage}">답글 달기</a>
 								<c:if test="${authUser.no == boardVo.userNo}">
 									<a href="${pageContext.request.contextPath}/board/modify/${boardVo.no}?page=${currentPage}">글수정</a>
 								</c:if>
-							</c:if>
-						</c:otherwise>
-					</c:choose>
+							</c:otherwise>
+						</c:choose>
+					</sec:authorize>
+					<sec:authorize access="!isAuthenticated()">
+						<c:choose>
+							<c:when test="${not empty kwd}">
+								<a href="${pageContext.request.contextPath}/board?page=${currentPage}&kwd=${kwd}">글목록</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${pageContext.request.contextPath}/board?page=${currentPage}">글목록</a>
+							</c:otherwise>
+						</c:choose>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
