@@ -1,9 +1,11 @@
-package com.poscodx.mysite.config.app;
+package com.poscodx.mysite.config;
 
 import com.poscodx.mysite.repository.UserRepository;
 import com.poscodx.mysite.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -18,8 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
-@Configuration
+@SpringBootConfiguration
 @EnableWebSecurity
+@ComponentScan(basePackages={"com.poscodx.mysite.repository"})
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserRepository userRepository;

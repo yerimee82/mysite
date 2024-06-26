@@ -1,7 +1,5 @@
 package com.poscodx.mysite.initializer;
 
-import com.poscodx.mysite.config.AppConfig;
-import com.poscodx.mysite.config.WebConfig;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;

@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 @Service
-@PropertySource("classpath:com/poscodx/mysite/config/web/fileupload.properties")
+@PropertySource("classpath:config/fileupload.properties")
 @RequiredArgsConstructor
 public class FileUploadService {
     private final Environment env;
