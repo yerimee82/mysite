@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: yerim
+Build-Jdk: version 17.0.9
+Implementation-Title: mysite6
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.poscodx
+Main-Class: ${start-class}
+

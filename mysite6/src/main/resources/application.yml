@@ -3,29 +3,34 @@ spring:
   application:
     name: mysite
 
-  #devtools - live reload
+  # devtools - live reload
   devtools:
     livereload:
       enabled: true
+    restart:
+      enabled: true  # 추가: DevTools 자동 재시작 기능 활성화
+    trigger-file: .reloadtrigger  # 추가: 재시작을 트리거할 파일
 
-  #aop
+  # aop
   aop:
     auto: true
     proxy-target-class: true
 
-  #mvc
+  # mvc
   mvc:
     static-path-pattern: /assets/**
-    throw-exception-if-no-handler-found:
-  #    view:
-#      prefix: /WEB-INF/views/
-#      suffix: .jsp
+    throw-exception-if-no-handler-found: true
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+      cache: false
 
   web:
     resources:
       static-locations: file:/Users/yerim/Desktop/mysite-upload/, classpath:assets/
+    locale: ko
 
-  # message resources(internationalication, i18n)
+  # message resources (internationalization, i18n)
   messages:
     basename: messages/message
     encoding: UTF-8
@@ -38,7 +43,7 @@ spring:
       max-file-size: 50MB
       max-request-size: 10MB
 
-  #datasource
+  # datasource
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://192.168.64.3:3306/webdb?charset=utf8
@@ -50,19 +55,26 @@ spring:
 
 # server configuration
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /mysite6
     encoding:
       charset: utf-8
       enabled: true
+    jsp:
+      init-parameters:
+        development: true
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
 
-
-#log
+# log
 logging:
   config: classpath:logback.xml
+  level:
+    root: debug
 
-#mybatis
+# mybatis
 mybatis:
   config-location: classpath:mybatis/configuration.xml
-

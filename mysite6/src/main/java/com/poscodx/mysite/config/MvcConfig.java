@@ -17,23 +17,13 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import java.util.Locale;
+
 @SpringBootConfiguration
-@ComponentScan(basePackages={"com.poscodx.mysite.service"})
 @RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
     private final SiteService siteService;
-    private final LocaleResolver localeResolver;
     private final ApplicationContext applicationContext;
-
-    // Locale Resolver
-    @Bean
-    public LocaleResolver localeResolver() {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-        localeResolver.setCookieName("lang");
-        localeResolver.setCookieHttpOnly(false);
-
-        return localeResolver;
-    }
 
     // View Resolver
     @Bean
@@ -51,7 +41,7 @@ public class MvcConfig implements WebMvcConfigurer {
     // Site Interceptor
     @Bean
     public HandlerInterceptor siteInterceptor() {
-        return new SiteInterceptor(siteService, localeResolver);
+        return new SiteInterceptor(siteService, localeResolver());
     }
 
     @Override
@@ -66,5 +56,14 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public ApplicationContextEventListener applicationContextEventListener() {
         return new ApplicationContextEventListener(applicationContext);
+    }
+
+    // Locale Resolver
+    @Bean
+    public LocaleResolver localeResolver() {
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setCookieName("lang");
+        localeResolver.setCookieHttpOnly(false);
+        return localeResolver;
     }
 }

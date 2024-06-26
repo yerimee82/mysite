@@ -11,6 +11,7 @@
 	<groupId>com.poscodx</groupId>
 	<artifactId>mysite6</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>mysite6</name>
 	<description>mysite6</description>
 
@@ -110,5 +111,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
