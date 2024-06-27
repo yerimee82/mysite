@@ -1,4 +1,4 @@
-# spring configuration
+# Spring Configuration
 spring:
   application:
     name: mysite
@@ -6,10 +6,9 @@ spring:
   # devtools - live reload
   devtools:
     livereload:
-      enabled: true
+      enable: true
     restart:
-      enabled: true  # 추가: DevTools 자동 재시작 기능 활성화
-    trigger-file: .reloadtrigger  # 추가: 재시작을 트리거할 파일
+      enable: true
 
   # aop
   aop:
@@ -28,20 +27,20 @@ spring:
   web:
     resources:
       static-locations: file:/Users/yerim/Desktop/mysite-upload/, classpath:assets/
-    locale: ko
 
-  # message resources (internationalization, i18n)
+  # message resources
   messages:
     basename: messages/message
     encoding: UTF-8
     always-use-message-format: true
 
+
   # multipart
   servlet:
     multipart:
       enabled: true
-      max-file-size: 50MB
       max-request-size: 10MB
+      max-file-size: 50MB
 
   # datasource
   datasource:
@@ -53,6 +52,7 @@ spring:
       minimum-idle: 10
       maximum-pool-size: 20
 
+
 # server configuration
 server:
   port: 8088
@@ -60,14 +60,15 @@ server:
     context-path: /mysite6
     encoding:
       charset: utf-8
-      enabled: true
+      enable: true
     jsp:
       init-parameters:
         development: true
-  error:
-    whitelabel:
-      enabled: false
-    path: /error
+    error:
+      whitelabel:
+        enable: false
+      path: /error
+
 
 # log
 logging:
@@ -75,6 +76,9 @@ logging:
   level:
     root: debug
 
+
 # mybatis
 mybatis:
   config-location: classpath:mybatis/configuration.xml
+
+
