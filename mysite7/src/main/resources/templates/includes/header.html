@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<script th:src="@{/assets/js/jquery/jquery-1.9.0.js}"></script>
+	<script>
+		$(function(){
+			$("#languages a").click(function(event){
+				event.preventDefault();
+				console.log($(this).data("lang"));
+
+				document.cookie =
+						"lang="    + $(this).data("lang") + ";" +              // name=value
+						"path="    + /*[[${#httpServletRequest.getContextPath()}]]*/ "" + ";" +  // path
+						"max-age=" + (30*24*60*60)                             // max-age
+
+				// reload
+				location.reload();
+			});
+		});
+	</script>
+</head>
+<body>
+<div id="header">
+	<h1 th:text="${site.title}">Site Title</h1>
+	<div id="languages">
+		<div th:if="${language == 'en'}">
+			<a href="" data-lang="ko">KR</a><a href="" class="active" data-lang="en">EN</a>
+		</div>
+		<div th:unless="${language == 'en'}">
+			<a href="" data-lang="ko" class="active">KR</a><a href="" data-lang="en">EN</a>
+		</div>
+	</div>
+	<ul>
+		<div sec:authorize="!isAuthenticated()">
+			<li><a th:href="@{/user/login}">로그인</a></li>
+			<li><a th:href="@{/user/join}">회원가입</a></li>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+			<li><a th:href="@{/user/update}">회원정보수정</a></li>
+			<li><a th:href="@{/user/logout}">로그아웃</a></li>
+			<li th:text="${#authentication.getPrincipal().name} + '님 안녕하세요 ^^;'"></li>
+		</div>
+	</ul>
+</div>
+</body>
+</html>

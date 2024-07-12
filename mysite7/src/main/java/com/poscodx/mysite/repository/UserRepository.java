@@ -1,9 +1,6 @@
 package com.poscodx.mysite.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscodx.mysite.vo.UserVo;
-import org.apache.ibatis.session.ResultContext;
-import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -37,26 +34,9 @@ public class UserRepository {
 //        return sqlSession.selectOne("user.findByEmail2", email);
 //    }
 
-    public <R> R findByEmail(String email, Class<R> resultType) {
-        FindByEmailResultHandler<R> findByEmailResultHandler = new FindByEmailResultHandler<>(resultType);
-        sqlSession.select("user.findByEmail", email, findByEmailResultHandler);
-
-        return findByEmailResultHandler.result;
-    }
-
-    private static class FindByEmailResultHandler<R> implements ResultHandler<Map<String, Object>> {
-        private R result;
-        private Class<R> resultType;
-
-        FindByEmailResultHandler(Class<R> resultType) {
-            this.resultType = resultType;
-        }
-
-        @Override
-        public void handleResult(ResultContext<? extends Map<String, Object>> resultContext) {
-            Map<String, Object> resultMap = resultContext.getResultObject();
-            result = new ObjectMapper().convertValue(resultMap, resultType);
-        }
+    public <R> R findByEmail(String email) {
+        R result = null;
+        return result;
     }
 
     public int updateWithPassword(UserVo vo) {
