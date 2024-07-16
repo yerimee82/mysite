@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -29,13 +30,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public String join(@ModelAttribute @Valid UserVo vo, BindingResult result, Model model) {
+    public String join(@RequestBody @Valid UserVo vo, BindingResult result, Model model) {
         if(result.hasErrors()) {
-//            model.addAttribute("userVo", vo);
-//            List<ObjectError> errors = result.getAllErrors();
-//            for (ObjectError error : errors) {
-//                System.out.println(error);
-//            }
             Map<String, Object> map = result.getModel();
             model.addAllAttributes(map);
             return "user/join";
@@ -64,7 +60,12 @@ public class UserController {
     }
 
     @RequestMapping(value="/update", method=RequestMethod.POST)
-    public String update(Authentication authentication, UserVo vo) {
+    public String update(Authentication authentication, @RequestBody @Valid UserVo vo, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAllAttributes(result.getModel());
+            return "user/update";
+        }
+
         UserVo authUser = (UserVo)authentication.getPrincipal();
         vo.setNo(authUser.getNo());
         userService.update(vo);

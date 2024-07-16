@@ -1,6 +1,8 @@
 package com.poscodx.mysite.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscodx.mysite.repository.UserRepository;
+import com.poscodx.mysite.security.UserDetailsImpl;
 import com.poscodx.mysite.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringBootConfiguration;
@@ -21,6 +23,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +48,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .logout()
                 .logoutUrl("/user/logout")
                 .and()
@@ -52,8 +58,12 @@ public class SecurityConfig {
                 .loginProcessingUrl("/user/auth")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/")
-//                .failureUrl("/user/login?result=fail")
+//                .defaultSuccessUrl("/")
+                .successHandler((request, response, authentication) -> {
+                    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write(new ObjectMapper().writeValueAsString(userDetails));
+                })
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -105,6 +115,18 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl(userRepository);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }
